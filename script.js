@@ -11,3 +11,9 @@ fetch(`https://api.themoviedb.org/3/authentication`, options)
 .then(data =>{
     console.log(data)
 })
+
+fetch(`https://api.themoviedb.org/3/movie/popular?language=en-US&page=1`, options)
+.then( ress => ress.json())
+.then(ress => console.log(ress))
+.catch(err => console.error(err))
+
