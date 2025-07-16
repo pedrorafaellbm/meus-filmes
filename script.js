@@ -29,12 +29,12 @@ const loadCardMovies = (filmes) => {
         const imageURL = `https://media.themoviedb.org/t/p/w440_and_h660_face`
 
         divCard.innerHTML =
-            `<img src="${imageURL}/${filme.poster_path}" class = "card-img-top" alt="${filme.title}">
+           `<img src="${imageURL}/${filme.poster_path}" class = "card-img-top" alt="${filme.title}">
             <div class="card-body d-flex flex-column">
               <h5 class="card-title">${filme.title}</h5>
               <p class="card-text text-overview">${filme.overview}</p>
               <div class=" mt-auto d-flex justify-content-between align-items-center ">
-                <a href="#" class="btn btn-primary btn-sm">Ver mais</a>
+                <a href="#">Ver mais</a>
                 <small class="text-muted"><strong>Estréia: </strong>
                 ${formateDate(filme.release_date)}</small>    
               </div>
