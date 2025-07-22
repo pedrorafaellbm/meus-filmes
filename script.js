@@ -7,50 +7,32 @@ const options = {
 }
 const userLang = navigator.language || 'en-US';
 
-
-fetch(`https://api.themoviedb.org/3/movie/popular?api_key=SEU_API_KEY&language=${userLang}`, options)
+fetch(`https://api.themoviedb.org/3/movie/popular?language=${userLang}`, options)
     .then(response => response.json())
     .then(data => {
-        console.log(data)
         loadCardMovies(data.results)
     })
     .catch(err => console.error(err))
 
 const loadCardMovies = (filmes) => {
     const container = document.getElementById('movie-container')
-    // https://media.themoviedb.org/t/p/w440_and_h660_face/c90Lt7OQGsOmhv6x4JoFdoHzw5l.jpg
-    filmes.forEach(filme => {
-        const divCol = document.createElement('div')
-        divCol.className = 'col-12 col-sm-6 mb-4 col-md-4 col-lg-3 mb-4'
+    container.innerHTML = ""; // Limpa antes de adicionar novos cards
 
+    filmes.forEach(filme => {
         const divCard = document.createElement('div')
-        divCard.className = 'card h-100 d-flex flex-column'
+        divCard.className = 'card movie-card-interactive'
 
         const imageURL = `https://media.themoviedb.org/t/p/w440_and_h660_face`
+        const movieUrl = `https://www.themoviedb.org/movie/${filme.id}`
 
         divCard.innerHTML =
-           `<img src="${imageURL}/${filme.poster_path}" class = "card-img-top" alt="${filme.title}">
-            <div class="card-body d-flex flex-column">
-              <h5 class="card-title">${filme.title}</h5>
-              <p class="card-text text-overview">${filme.overview}</p>
-              <div class=" mt-auto d-flex justify-content-between align-items-center ">
-                <a href="#">Ver mais</a>
-                <small class="text-muted"><strong>Estréia: </strong>
-                ${formateDate(filme.release_date)}</small>    
-              </div>
-            </div>`
+           `<a href="${movieUrl}" target="_blank" title="${filme.title}">
+                <img src="${imageURL}/${filme.poster_path}" class="card-img-top" alt="${filme.title}">
+            </a>`
 
-        divCol.appendChild(divCard)
-        container.appendChild(divCol)
+        container.appendChild(divCard)
     })
 }
-
-const formateDate = (date) => {
-    const options = { year: 'numeric', month: 'long', day: 'numeric' }
-    return new Date(date).toLocaleDateString('pt-BR', options)
-}
-
-
 
 
 

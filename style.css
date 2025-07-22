@@ -6,3 +6,38 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.navbar-brand img {
+    width: 40px;
+    margin-right: 10px;
+}
+
+.titulo-navbar {
+    transition: text-shadow .3s ease;
+}
+
+.titulo-navbar:hover {
+    text-shadow: 0 0 5px rgba(255, 215, 0, .6), 0 0 10px rgba(255, 223, 100, .4);
+}
+
+.movie-row .card {
+  min-width: 100px;
+  max-width: 100px;
+  flex: 0 0 auto;
+  margin: 0;
+  border: none;
+  background: transparent;
+}
+
+.movie-row .card-img-top {
+  height: 150px;
+  width: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.movie-card-interactive:hover .card-img-top {
+  transform: scale(1.08);
+  box-shadow: 0 4px 16px rgba(128,0,128,0.3);
+}
