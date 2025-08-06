@@ -4,55 +4,100 @@ const options = {
         accept: 'application/json',
         Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2ZjAxMjZkNjQ2OTU4ZWM4MzJmYTM3NGFjOGQ3MDhlNSIsIm5iZiI6MTc1MjAxODY1OS4xNTIsInN1YiI6IjY4NmRhZWUzMzY0YmVmMDM4NGNlZWQyYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.9fobntkbwah6K5MyC5II7J9QYLuBanDYbB1HMIHyNW8`
     }
-}
+};
 const userLang = navigator.language || 'en-US';
 
-fetch(`https://api.themoviedb.org/3/movie/popular?language=${userLang}`, options)
-    .then(response => response.json())
-    .then(data => {
-        loadCardMovies(data.results)
-    })
-    .catch(err => console.error(err))
-
-const loadCardMovies = (filmes) => {
-    const container = document.getElementById('movie-container')
-    container.innerHTML = ""; // Limpa antes de adicionar novos cards
+function loadCardMovies(filmes) {
+    const container = document.getElementById('movie-container');
+    container.innerHTML = "";
 
     filmes.forEach(filme => {
-        const divCard = document.createElement('div')
-        divCard.className = 'card movie-card-interactive'
+        const divCard = document.createElement('div');
+        divCard.className = 'card movie-card-interactive';
 
-        const imageURL = `https://media.themoviedb.org/t/p/w440_and_h660_face`
-        const movieUrl = `https://www.themoviedb.org/movie/${filme.id}`
-        const percent = Math.round(filme.vote_average * 10); // Calcula a porcentagem
+        const imageURL = `https://media.themoviedb.org/t/p/w440_and_h660_face`;
+        const movieUrl = `https://www.themoviedb.org/movie/${filme.id}`;
+        const percent = Math.round(filme.vote_average * 10);
 
         divCard.innerHTML =
-    `<div class="img-wrapper">
-        <a href="${movieUrl}" target="_blank" title="${filme.title}">
-            <img src="${imageURL}/${filme.poster_path}" class="card-img-top" alt="${filme.title}">
-            <span class="badge badge-rating">${percent}%</span>
-        </a>
-    </div>`;
+            `<div class="img-wrapper">
+                <a href="${movieUrl}" target="_blank" title="${filme.title}">
+                    <img src="${imageURL}/${filme.poster_path}" class="card-img-top" alt="${filme.title}">
+                    <span class="badge badge-rating">${percent}%</span>
+                </a>
+            </div>`;
 
-        container.appendChild(divCard)
-    })
-
-    document.addEventListener('keydown', function (event) {
-        const container = document.getElementById('movie-container');
-        if (event.key === 'ArrowRight') {
-            container.scrollBy({ left: 200, behavior: 'smooth' });
-        }
-        if (event.key === 'ArrowLeft') {
-            container.scrollBy({ left: -200, behavior: 'smooth' });
-        }
+        container.appendChild(divCard);
     });
 }
 
+// Carrega filmes populares ao iniciar
+fetch(`https://api.themoviedb.org/3/movie/popular?language=${userLang}`, options)
+    .then(response => response.json())
+    .then(data => {
+        loadCardMovies(data.results);
+    })
+    .catch(err => console.error(err));
 
+// Pesquisa de filmes
+document.addEventListener('DOMContentLoaded', function () {
+    // Pesquisa
+    const form = document.getElementById('search-form');
+    const input = document.getElementById('search-input');
+    const movieContainer = document.getElementById('movie-container');
 
+    if (form && input && movieContainer) {
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const query = input.value.trim();
+            if (query) {
+                searchMovies(query);
+            }
+        });
+    }
 
+    function searchMovies(query) {
+        fetch(`https://api.themoviedb.org/3/search/movie?language=${userLang}&query=${encodeURIComponent(query)}`, options)
+            .then(res => res.json())
+            .then(data => {
+                if (data.results && data.results.length > 0) {
+                    loadCardMovies(data.results);
+                } else {
+                    movieContainer.innerHTML = '<p class="text-center mt-4">Nenhum filme encontrado.</p>';
+                }
+            })
+            .catch(() => {
+                movieContainer.innerHTML = '<p class="text-center mt-4">Erro ao buscar filmes.</p>';
+            });
+    }
 
-// fetch(`https://api.themoviedb.org/3/movie/popular?language=en-US&page=1`, options)
-// .then( ress => ress.json())
-// .then(ress => console.log(ress))
-// .catch(err => console.error(err))
+      // Carrossel de tendências da semana (todas as tendências)
+    const carousel = document.getElementById('carousel-trends');
+    if (carousel) {
+        fetch('https://api.themoviedb.org/3/trending/movie/week?language=pt-BR', options)
+            .then(res => res.json())
+            .then(data => {
+                if (!data.results || data.results.length === 0) return;
+                const slides = data.results.map((movie, idx) => `
+                    <div class="carousel-item${idx === 0 ? ' active' : ''}" style="position:relative; min-height:350px;">
+                      <div style="
+                        position:absolute;
+                        inset:0;
+                        background: url('https://image.tmdb.org/t/p/original${movie.backdrop_path || movie.poster_path}') center center / cover no-repeat;
+                        filter: brightness(0.4) blur(2px);
+                        z-index:1;
+                      "></div>
+                      <div class="d-flex flex-column flex-md-row align-items-center justify-content-center h-100" style="position:relative; z-index:2; min-height:350px;">
+                        <img src="https://image.tmdb.org/t/p/w500${movie.poster_path || movie.backdrop_path}" class="d-block rounded shadow" alt="${movie.title}" style="max-width:220px;max-height:320px;object-fit:cover;">
+                        <div class="ms-md-4 mt-3 mt-md-0 text-center text-md-start text-white">
+                          <h4 class="fw-bold">${movie.title}</h4>
+                          <p class="mb-1">${movie.overview ? movie.overview.substring(0, 180) + (movie.overview.length > 180 ? '...' : '') : 'Sem descrição.'}</p>
+                          <span class="badge bg-warning text-dark fs-6">Nota: ${movie.vote_average?.toFixed(1) ?? '-'}</span>
+                        </div>
+                      </div>
+                    </div>
+                `).join('');
+                carousel.innerHTML = slides;
+            });
+    }
+});

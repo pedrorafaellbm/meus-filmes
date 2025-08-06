@@ -58,7 +58,7 @@
 
 html, body {
     height: 100%;
-    background-color: rgb(3, 78, 3) !important;
+    background-color: rgb(2, 20, 2) !important;
     color: #fff;
     margin: 0;
     padding: 0;
@@ -93,4 +93,15 @@ html, body {
     font-size: 1rem;
     font-weight: bold;
     z-index: 2;
+}
+
+.carousel-extended .carousel-item p,
+.carousel-extended .carousel-item .mb-1 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;   /* Limita para 3 linhas */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 500px;
+  margin-bottom: 0.5rem;
 }
