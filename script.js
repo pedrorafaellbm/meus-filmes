@@ -24,15 +24,30 @@ const loadCardMovies = (filmes) => {
 
         const imageURL = `https://media.themoviedb.org/t/p/w440_and_h660_face`
         const movieUrl = `https://www.themoviedb.org/movie/${filme.id}`
+        const percent = Math.round(filme.vote_average * 10); // Calcula a porcentagem
 
         divCard.innerHTML =
-           `<a href="${movieUrl}" target="_blank" title="${filme.title}">
-                <img src="${imageURL}/${filme.poster_path}" class="card-img-top" alt="${filme.title}">
-            </a>`
+    `<div class="img-wrapper">
+        <a href="${movieUrl}" target="_blank" title="${filme.title}">
+            <img src="${imageURL}/${filme.poster_path}" class="card-img-top" alt="${filme.title}">
+            <span class="badge badge-rating">${percent}%</span>
+        </a>
+    </div>`;
 
         container.appendChild(divCard)
     })
+
+    document.addEventListener('keydown', function (event) {
+        const container = document.getElementById('movie-container');
+        if (event.key === 'ArrowRight') {
+            container.scrollBy({ left: 200, behavior: 'smooth' });
+        }
+        if (event.key === 'ArrowLeft') {
+            container.scrollBy({ left: -200, behavior: 'smooth' });
+        }
+    });
 }
+
 
 
 

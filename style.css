@@ -7,6 +7,10 @@
     text-overflow: ellipsis;
 }
 
+.navbar {
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.089) 0%, rgb(0, 0, 0) 100%);
+}
+
 .navbar-brand img {
     width: 40px;
     margin-right: 10px;
@@ -19,10 +23,20 @@
 .titulo-navbar:hover {
     text-shadow: 0 0 5px rgba(255, 215, 0, .6), 0 0 10px rgba(255, 223, 100, .4);
 }
+.navbar-nav .nav-link {
+    color: #fff !important;         /* Cor dos links */
+    transition: color 0.2s;
+}
+
+.navbar-nav .nav-link.active,
+.navbar-nav .nav-link:focus,
+.navbar-nav .nav-link:hover {
+    color: #FFD700 !important;      /* Cor ao passar o mouse ou ativo */
+}
 
 .movie-row .card {
-  min-width: 100px;
-  max-width: 100px;
+  min-width: 140px;
+  max-width: 130px;
   flex: 0 0 auto;
   margin: 0;
   border: none;
@@ -30,8 +44,8 @@
 }
 
 .movie-row .card-img-top {
-  height: 150px;
-  width: 100px;
+  height: 220px;
+  width: 150px;
   object-fit: cover;
   border-radius: 8px;
   transition: transform 0.2s, box-shadow 0.2s;
@@ -40,4 +54,43 @@
 .movie-card-interactive:hover .card-img-top {
   transform: scale(1.08);
   box-shadow: 0 4px 16px rgba(128,0,128,0.3);
+}
+
+html, body {
+    height: 100%;
+    background-color: rgb(3, 78, 3) !important;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+}
+
+#movie-container {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    overflow-x: auto;
+    padding: 16px 0;
+    scrollbar-width: none; /* Firefox */
+}
+#movie-container::-webkit-scrollbar {
+    display: none; /* Chrome, Safari e Edge */
+}
+
+.img-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.badge-rating {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: #f10101;
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: bold;
+    z-index: 2;
 }
