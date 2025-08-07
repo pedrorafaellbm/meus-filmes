@@ -105,3 +105,28 @@ html, body {
   max-width: 500px;
   margin-bottom: 0.5rem;
 }
+
+.carousel-extended .carousel-item h5 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+.text {
+    font-size: 1.8rem;
+    color: #FFD700 !important;      /* Cor ao passar o mouse ou ativo */
+}
+
+.flex-grow-1 {
+    flex-grow: 1;
+    justify-content: center;
+}
+h2.text {
+  margin-bottom: 0.5rem; /* Reduz a distância entre o título e os filmes */
+}
+.movie-row {
+  margin-top: 0; /* Garante que os filmes encostem no título */
+}
+
+.carousel-extended .btn {
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+}
