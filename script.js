@@ -78,7 +78,19 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(res => res.json())
             .then(data => {
                 if (!data.results || data.results.length === 0) return;
-                const slides = data.results.map((movie, idx) => `
+ // Carrossel de tendências da semana (todas as tendências)
+const carousel = document.getElementById('carousel-trends');
+if (carousel) {
+    fetch('https://api.themoviedb.org/3/trending/movie/week?language=pt-BR', options)
+        .then(res => res.json())
+        .then(data => {
+            if (!data.results || data.results.length === 0) return;
+
+            const slides = data.results.map((movie, idx) => {
+                const shortOverview = movie.overview?.substring(0, 180) ?? '';
+                const fullOverview = movie.overview ?? 'Sem descrição.';
+
+                return `
                     <div class="carousel-item${idx === 0 ? ' active' : ''}" style="position:relative; min-height:350px;">
                       <div style="
                         position:absolute;
@@ -87,17 +99,49 @@ document.addEventListener('DOMContentLoaded', function () {
                         filter: brightness(0.4) blur(2px);
                         z-index:1;
                       "></div>
+
                       <div class="d-flex flex-column flex-md-row align-items-center justify-content-center h-100" style="position:relative; z-index:2; min-height:350px;">
-                        <img src="https://image.tmdb.org/t/p/w500${movie.poster_path || movie.backdrop_path}" class="d-block rounded shadow" alt="${movie.title}" style="max-width:220px;max-height:320px;object-fit:cover;">
+                        <img src="https://image.tmdb.org/t/p/w500${movie.poster_path || movie.backdrop_path}" class="d-block rounded shadow" alt="${movie.title}" style="max-width:220px; max-height:320px; object-fit:cover;">
+                        
                         <div class="ms-md-4 mt-3 mt-md-0 text-center text-md-start text-white">
                           <h4 class="fw-bold">${movie.title}</h4>
-                          <p class="mb-1">${movie.overview ? movie.overview.substring(0, 180) + (movie.overview.length > 180 ? '...' : '') : 'Sem descrição.'}</p>
+
+                          <p class="movie-overview" data-full="${fullOverview}" data-short="${shortOverview}">
+                            ${shortOverview}${fullOverview.length > 180 ? '...' : ''}
+                          </p>
+
                           <span class="badge bg-warning text-dark fs-6">Nota: ${movie.vote_average?.toFixed(1) ?? '-'}</span>
+
+                          ${fullOverview.length > 180 ? `
+                            <button class="btn btn-sm btn-outline-light mt-2 ver-mais-btn">Ver mais</button>
+                          ` : ''}
                         </div>
                       </div>
                     </div>
-                `).join('');
+                `;
+            }).join('');
+
+            carousel.innerHTML = slides;
+
+            // Adiciona eventos aos botões "Ver mais"
+            document.querySelectorAll('.ver-mais-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const p = btn.previousElementSibling.previousElementSibling; // o <p> com a descrição
+                    const isExpanded = btn.innerText === 'Ver menos';
+
+                    if (isExpanded) {
+                        p.innerHTML = p.dataset.short + '...';
+                        btn.innerText = 'Ver mais';
+                    } else {
+                        p.innerHTML = p.dataset.full;
+                        btn.innerText = 'Ver menos';
+                    }
+                });
+            });
+        });
+}
                 carousel.innerHTML = slides;
             });
     }
 });
+slides
