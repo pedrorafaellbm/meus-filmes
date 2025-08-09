@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,10 +9,16 @@
   <link rel="icon" type="image/png" href="imagens/movie.png" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
 </head>
-
 <body>
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg">
+
+  <!-- Vídeo de fundo -->
+  <video autoplay muted loop id="bg-video">
+    <source src="./140151-865442951.mp4" type="video/mp4">
+    Seu navegador não suporta vídeos em HTML5.
+  </video>
+
+  <!-- Navbar fixa -->
+  <nav class="navbar navbar-expand-lg fixed-top">
     <div class="container d-flex align-items-center justify-content-between">
       <a class="navbar-brand d-flex align-items-center" href="index.html">
         <img src="imagens/movie.png" alt="Cine-Vision" class="me-2" />
@@ -43,34 +48,44 @@
     </div>
   </nav>
 
-  <!-- Carrossel de tendências da semana -->
-  <section class="carousel-extended Slides">
-<div id="trendCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="6000">
+  <!-- Carrossel de tendências -->
+  <section class="carousel-extended Slides container mt-5 pt-4">
+    <div id="trendCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="6000">
       <div class="carousel-inner" id="carousel-trends">
-        <!-- Slides serão inseridos via JS -->
+        <!-- Slides inseridos via JS -->
       </div>
+      <!-- Controles do carrossel -->
+      <button class="carousel-control-prev" type="button" data-bs-target="#trendCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Anterior</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#trendCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Próximo</span>
+      </button>
     </div>
-
+  </section>
 
   <!-- Filmes Populares -->
   <section class="container">
     <h2 class="text">Populares!</h2>
-    <div id="movie-container" class="movie-row"></div>
+    <div id="popular-container" class="movie-row"></div>
   </section>
-    <!-- Filmes Populares -->
+
+  <!-- Filmes em cartaz -->
   <section class="container">
     <h2 class="text">Filmes!</h2>
-    <div id="movie-container" class="movie-row"></div>
+    <div id="movies-container" class="movie-row"></div>
   </section>
-    <!-- Filmes Populares -->
+
+  <!-- Séries populares -->
   <section class="container">
     <h2 class="text">Séries!</h2>
-    <div id="movie-container" class="movie-row"></div>
+    <div id="series-container" class="movie-row"></div>
   </section>
 
   <!-- Scripts -->
   <script src="script.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>

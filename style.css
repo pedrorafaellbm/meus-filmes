@@ -1,6 +1,27 @@
+/* Vídeo de fundo */
+#bg-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  min-width: 100%;
+  min-height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+
+/* Corrige o empurrão da navbar fixa */
+body {
+  padding-top: 80px;
+  height: 100%;
+  background-color: rgb(1, 19, 1) !important;
+  color: #fff;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
 /* Navbar */
 .navbar {
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.089) 0%, rgb(0, 0, 0) 100%);
+  background: linear-gradient(to top, rgba(38, 226, 13, 0.089) 0%, rgb(2, 15, 0) 100%);
 }
 
 .navbar-brand img {
@@ -27,45 +48,34 @@
   color: #FFD700 !important;
 }
 
-/* Layout */
-html, body {
-  height: 100%;
-  background-color: rgb(0, 15, 0) !important;
-  color: #fff;
-  margin: 0;
-  padding: 0;
-}
-
+/* Títulos */
 .text {
   font-size: 1.8rem;
   color: #FFD700 !important;
-}
-
-h2.text {
   margin-bottom: 0.5rem;
 }
 
-.flex-grow-1 {
-  flex-grow: 1;
-  justify-content: center;
+/* Containers principais */
+#popular-container,
+#movies-container,
+#series-container {
+  position: relative;
+  z-index: 1;
 }
 
-/* Filmes Populares */
-#movie-container {
+/* Filmes e séries */
+.movie-row {
   display: flex;
   flex-direction: row;
   gap: 16px;
   overflow-x: auto;
   padding: 16px 0;
   scrollbar-width: none;
-}
-
-#movie-container::-webkit-scrollbar {
-  display: none;
-}
-
-.movie-row {
   margin-top: 0;
+}
+
+.movie-row::-webkit-scrollbar {
+  display: none;
 }
 
 .movie-row .card {
@@ -75,6 +85,8 @@ h2.text {
   margin: 0;
   border: none;
   background: transparent;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .movie-row .card-img-top {
@@ -110,6 +122,11 @@ h2.text {
 }
 
 /* Carrossel */
+.carousel-extended {
+  position: relative;
+  z-index: 1;
+}
+
 .carousel-extended .carousel-item p,
 .carousel-extended .carousel-item .mb-1 {
   display: -webkit-box;
@@ -132,7 +149,7 @@ h2.text {
 }
 
 .ver-mais-btn {
-  padding: 0.4rem 0.5rem;  /* Altura e largura */
-  font-size: 1rem;         /* Tamanho do texto */
-  border-radius: 6px;      /* Borda arredondada */
+  padding: 0.4rem 0.5rem;
+  font-size: 1rem;
+  border-radius: 6px;
 }
