@@ -1,12 +1,15 @@
-const options = {
-  method: 'GET',
-  headers: {
-    accept: 'application/json',
-    Authorization: 'Bearer SEU_TOKEN_AQUI' // Substitua com seu token da API TMDB
-  }
-};
-
+const API_KEY = '6f0126d646958ec832fa374ac8d708e5';
 const userLang = navigator.language || 'pt-BR';
+
+function buildUrl(path, params = {}) {
+  const url = new URL(`https://api.themoviedb.org/3/${path}`);
+  url.searchParams.set('api_key', API_KEY);
+  url.searchParams.set('language', userLang);
+  for (const [key, value] of Object.entries(params)) {
+    url.searchParams.set(key, value);
+  }
+  return url.toString();
+}
 
 // Carregar filmes/séries nos containers
 function loadCardMovies(filmes, containerId) {
@@ -42,7 +45,7 @@ function loadCardMovies(filmes, containerId) {
 // Buscar filmes via input
 function searchMovies(query) {
   const popularContainer = document.getElementById('popular-container');
-  fetch(`https://api.themoviedb.org/3/search/movie?language=${userLang}&query=${encodeURIComponent(query)}`, options)
+  fetch(buildUrl('search/movie', { query }))
     .then(res => res.json())
     .then(data => {
       if (data.results && data.results.length > 0) {
@@ -61,7 +64,7 @@ function loadTrendingCarousel() {
   const carousel = document.getElementById('carousel-trends');
   if (!carousel) return;
 
-  fetch('https://api.themoviedb.org/3/trending/movie/week?language=pt-BR', options)
+  fetch(buildUrl('trending/movie/week'))
     .then(res => res.json())
     .then(data => {
       if (!data.results || data.results.length === 0) return;
@@ -103,7 +106,6 @@ function loadTrendingCarousel() {
 
       carousel.innerHTML = slides;
 
-      // Adiciona evento aos botões "Ver mais"
       setTimeout(() => {
         document.querySelectorAll('.ver-mais-btn').forEach(btn => {
           btn.addEventListener('click', () => {
@@ -131,7 +133,7 @@ async function fetchAllSeries() {
   let totalPages = 1;
 
   while (page <= totalPages) {
-    const response = await fetch(`https://api.themoviedb.org/3/tv/popular?language=${userLang}&page=${page}`, options);
+    const response = await fetch(buildUrl('tv/popular', { page }));
     const data = await response.json();
     if (!data.results) break;
 
@@ -146,7 +148,7 @@ async function fetchAllSeries() {
 // DOM Loaded
 document.addEventListener('DOMContentLoaded', function () {
   // Carregar filmes populares
-  fetch(`https://api.themoviedb.org/3/movie/popular?language=${userLang}`, options)
+  fetch(buildUrl('movie/popular'))
     .then(response => response.json())
     .then(data => {
       loadCardMovies(data.results, 'popular-container');
@@ -154,7 +156,7 @@ document.addEventListener('DOMContentLoaded', function () {
     .catch(err => console.error('Erro ao carregar filmes populares:', err));
 
   // Carregar filmes em cartaz
-  fetch(`https://api.themoviedb.org/3/movie/now_playing?language=${userLang}`, options)
+  fetch(buildUrl('movie/now_playing'))
     .then(response => response.json())
     .then(data => {
       loadCardMovies(data.results, 'movies-container');
