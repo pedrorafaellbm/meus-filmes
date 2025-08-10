@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Criar Conta - Cine-Vision</title>
+  <link rel="stylesheet" href="cadastro.css">
+</head>
+<body>
+
+  <div class="bg-overlay"></div>
+
+  <div class="cadastro-container">
+    <h1 class="logo">Cine-Vision</h1>
+    <form id="register-form" class="cadastro-form">
+      <h2>Criar conta</h2>
+      
+      <input type="text" id="username" placeholder="Nome de usuário (Mínimo 20 Letras)" required>
+      <input type="email" id="email" placeholder="Email" required>
+      <input type="password" id="password" placeholder="Senha (Mínimo 26 caracteres)" required>
+      
+      <button type="submit">Registrar</button>
+      <p id="mensagem" class="mensagem"></p>
+    </form>
+    <p class="login-link">Já tem uma conta? <a href="#">Entrar</a></p>
+  </div>
+
+  <script src="cadastro.js"></script>
+</body>
+</html>
