@@ -186,4 +186,29 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
   }
+
+  // === BOTÃO DE PERFIL NA NAVBAR ===
+  const perfilBtn = document.getElementById('btn-perfil');
+  const perfilAvatar = document.getElementById('perfil-avatar');
+
+  if (perfilBtn && perfilAvatar) {
+    // Atualiza a imagem do avatar do perfil, se existir no localStorage
+    const perfilData = localStorage.getItem('perfilSelecionado');
+    if (perfilData) {
+      try {
+        const perfil = JSON.parse(perfilData);
+        if (perfil.avatar) {
+          perfilAvatar.src = perfil.avatar;
+          perfilAvatar.alt = perfil.name || 'Perfil';
+        }
+      } catch {
+        // JSON inválido, não faz nada
+      }
+    }
+
+    // Clique no botão redireciona para a página de perfis
+    perfilBtn.addEventListener('click', () => {
+      window.location.href = 'perfis.html';
+    });
+  }
 });
