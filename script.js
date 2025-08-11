@@ -1,4 +1,4 @@
-const API_KEY = '6f0126d646958ec832fa374ac8d708e5';
+const API_KEY = '6f0126d646958ec832fa374ac8d708e5'
 const userLang = navigator.language || 'pt-BR';
 
 function buildUrl(path, params = {}) {
@@ -11,7 +11,6 @@ function buildUrl(path, params = {}) {
   return url.toString();
 }
 
-// Carregar filmes/séries nos containers
 function loadCardMovies(filmes, containerId) {
   const container = document.getElementById(containerId);
   if (!container) return;
@@ -32,7 +31,11 @@ function loadCardMovies(filmes, containerId) {
     divCard.innerHTML = `
       <div class="img-wrapper">
         <a href="${movieUrl}" target="_blank" title="${title}">
-          <img src="${imageURL}${filme.poster_path}" class="card-img-top" alt="${title}">
+          <img
+            src="${imageURL}${filme.poster_path}"
+            class="card-img-top"
+            alt="${title}"
+          />
           <span class="badge badge-rating">${percent}%</span>
         </a>
       </div>
@@ -42,13 +45,12 @@ function loadCardMovies(filmes, containerId) {
   });
 }
 
-// Buscar filmes via input
 function searchMovies(query) {
   const popularContainer = document.getElementById('popular-container');
   fetch(buildUrl('search/movie', { query }))
     .then(res => res.json())
     .then(data => {
-      if (data.results && data.results.length > 0) {
+      if (data.results?.length) {
         loadCardMovies(data.results, 'popular-container');
       } else {
         popularContainer.innerHTML = '<p class="text-center mt-4">Nenhum filme encontrado.</p>';
@@ -59,15 +61,15 @@ function searchMovies(query) {
     });
 }
 
-// Carrossel de tendências da semana
 function loadTrendingCarousel() {
   const carousel = document.getElementById('carousel-trends');
-  if (!carousel) return;
+  const carouselWrapper = document.getElementById('trendCarousel');
+  if (!carousel || !carouselWrapper) return;
 
   fetch(buildUrl('trending/movie/week'))
     .then(res => res.json())
     .then(data => {
-      if (!data.results || data.results.length === 0) return;
+      if (!data.results?.length) return;
 
       const slides = data.results.map((movie, idx) => {
         const shortOverview = movie.overview?.substring(0, 180) ?? '';
@@ -85,19 +87,14 @@ function loadTrendingCarousel() {
 
             <div class="d-flex flex-column flex-md-row align-items-center justify-content-center h-100" style="position:relative; z-index:2;">
               <img src="https://image.tmdb.org/t/p/w500${movie.poster_path || movie.backdrop_path}" class="d-block rounded shadow" alt="${movie.title}" style="max-width:220px; max-height:320px; object-fit:cover;">
-              
+
               <div class="ms-md-4 mt-3 mt-md-0 text-center text-md-start text-white">
                 <h4 class="fw-bold">${movie.title}</h4>
-
                 <p class="movie-overview" data-full="${fullOverview}" data-short="${shortOverview}">
                   ${shortOverview}${fullOverview.length > 180 ? '...' : ''}
                 </p>
-
                 <span class="badge bg-warning text-dark fs-6">Nota: ${movie.vote_average?.toFixed(1) ?? '-'}</span>
-
-                ${fullOverview.length > 180 ? `
-                  <button class="btn btn-sm btn-outline-light mt-2 ver-mais-btn">Ver mais</button>
-                ` : ''}
+                ${fullOverview.length > 180 ? `<button class="btn btn-sm btn-outline-light mt-2 ver-mais-btn">Ver mais</button>` : ''}
               </div>
             </div>
           </div>
@@ -106,12 +103,15 @@ function loadTrendingCarousel() {
 
       carousel.innerHTML = slides;
 
+      // Re-inicializa o carrossel Bootstrap para ativar setas e funcionalidades
+      bootstrap.Carousel.getInstance(carouselWrapper)?.dispose();
+      new bootstrap.Carousel(carouselWrapper);
+
       setTimeout(() => {
         document.querySelectorAll('.ver-mais-btn').forEach(btn => {
           btn.addEventListener('click', () => {
             const p = btn.parentElement.querySelector('p');
             const isExpanded = btn.innerText === 'Ver menos';
-
             if (isExpanded) {
               p.innerHTML = p.dataset.short + '...';
               btn.innerText = 'Ver mais';
@@ -126,89 +126,112 @@ function loadTrendingCarousel() {
     .catch(err => console.error('Erro ao carregar carrossel:', err));
 }
 
-// Carrega todas as séries populares com paginação
 async function fetchAllSeries() {
-  let allSeries = [];
-  let page = 1;
-  let totalPages = 1;
-
+  let allSeries = [], page = 1, totalPages = 1;
   while (page <= totalPages) {
     const response = await fetch(buildUrl('tv/popular', { page }));
     const data = await response.json();
     if (!data.results) break;
-
     allSeries = allSeries.concat(data.results);
     totalPages = data.total_pages;
     page++;
   }
-
   return allSeries;
 }
 
-// DOM Loaded
 document.addEventListener('DOMContentLoaded', function () {
-  // Carregar filmes populares
   fetch(buildUrl('movie/popular'))
-    .then(response => response.json())
-    .then(data => {
-      loadCardMovies(data.results, 'popular-container');
-    })
+    .then(r => r.json())
+    .then(data => loadCardMovies(data.results, 'popular-container'))
     .catch(err => console.error('Erro ao carregar filmes populares:', err));
 
-  // Carregar filmes em cartaz
   fetch(buildUrl('movie/now_playing'))
-    .then(response => response.json())
-    .then(data => {
-      loadCardMovies(data.results, 'movies-container');
-    })
+    .then(r => r.json())
+    .then(data => loadCardMovies(data.results, 'movies-container'))
     .catch(err => console.error('Erro ao carregar filmes em cartaz:', err));
 
-  // Carregar séries populares
   fetchAllSeries()
-    .then(series => {
-      loadCardMovies(series, 'series-container');
-    })
+    .then(series => loadCardMovies(series, 'series-container'))
     .catch(err => console.error('Erro ao carregar séries:', err));
 
-  // Carregar carrossel
   loadTrendingCarousel();
 
-  // Função de busca
   const form = document.getElementById('search-form');
   const input = document.getElementById('search-input');
-
   if (form && input) {
-    form.addEventListener('submit', function (e) {
+    form.addEventListener('submit', e => {
       e.preventDefault();
-      const query = input.value.trim();
-      if (query) {
-        searchMovies(query);
-      }
+      if (input.value.trim()) searchMovies(input.value.trim());
     });
   }
 
-  // === BOTÃO DE PERFIL NA NAVBAR ===
+  // Botão perfil na navbar
   const perfilBtn = document.getElementById('btn-perfil');
   const perfilAvatar = document.getElementById('perfil-avatar');
 
   if (perfilBtn && perfilAvatar) {
-    // Atualiza a imagem do avatar do perfil, se existir no localStorage
-    const perfilData = localStorage.getItem('perfilSelecionado');
+    const perfilData = localStorage.getItem('perfil-selecionado');
     if (perfilData) {
       try {
         const perfil = JSON.parse(perfilData);
         if (perfil.avatar) {
           perfilAvatar.src = perfil.avatar;
-          perfilAvatar.alt = perfil.name || 'Perfil';
+          perfilAvatar.alt = perfil.nome || 'Perfil';
+        } else {
+          perfilAvatar.src = `https://i.pravatar.cc/150?u=${encodeURIComponent(perfil.nome)}`;
+          perfilAvatar.alt = perfil.nome || 'Perfil';
         }
-      } catch {
-        // JSON inválido, não faz nada
-      }
+      } catch {}
     }
 
-    // Clique no botão redireciona para a página de perfis
     perfilBtn.addEventListener('click', () => {
       window.location.href = 'perfis.html';
     });
   }
+});
+
+async function fetchGenresWithPoster() {
+  try {
+    const genreRes = await fetch(`https://api.themoviedb.org/3/genre/movie/list?api_key=${API_KEY}&language=pt-BR`);
+    const genreData = await genreRes.json();
+    const genres = genreData.genres;
+
+    const container = document.getElementById('genres-container');
+    container.innerHTML = '';
+
+    for (const genre of genres) {
+      // Pega o filme mais popular do gênero para a imagem
+      const movieRes = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&with_genres=${genre.id}&sort_by=popularity.desc&language=pt-BR&page=1`);
+      const movieData = await movieRes.json();
+      const movie = movieData.results?.[0];
+
+      if (!movie || !movie.poster_path) continue;
+
+      const card = document.createElement('button');
+      card.className = 'genre-card';
+      card.title = `${genre.name} — ${movie.title}`;
+      card.type = 'button';
+
+      card.innerHTML = `
+        <img src="https://image.tmdb.org/t/p/w300${movie.poster_path}" alt="${genre.name}">
+        <span class="genre-label">${genre.name}</span>
+      `;
+
+      card.onclick = () => {
+        // Exemplo de ação: abrir página do gênero no TMDb
+        window.open(`https://www.themoviedb.org/genre/${genre.id}-${genre.name.toLowerCase()}`, '_blank');
+      };
+
+      container.appendChild(card);
+    }
+  } catch (err) {
+    console.error('Erro ao carregar gêneros:', err);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Seu código atual...
+
+  // Carrega os gêneros com capas circulares
+  fetchGenresWithPoster();
 });

@@ -1,21 +1,18 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cine-Vision</title>
   <link rel="stylesheet" href="style.css" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link rel="icon" type="image/png" href="imagens/movie.png" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">  <link rel="icon" type="image/png" href="imagens/movie.png" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
 </head>
-
 <body>
 
   <!-- Vídeo de fundo -->
   <video autoplay muted loop id="bg-video">
-    <source src="./140151-865442951.mp4" type="video/mp4">
+    <source src="./140151-865442951.mp4" type="video/mp4" />
     Seu navegador não suporta vídeos em HTML5.
   </video>
 
@@ -29,8 +26,7 @@
 
       <div class="flex-grow-1 d-flex justify-content-center">
         <form id="search-form" class="d-flex" role="search" style="max-width: 400px; min-width: 200px; width: 100%;">
-          <input id="search-input" class="form-control me-2" type="search" placeholder="Buscar filmes..."
-            aria-label="Buscar" />
+          <input id="search-input" class="form-control me-2" type="search" placeholder="Buscar filmes..." aria-label="Buscar" />
         </form>
       </div>
 
@@ -40,19 +36,13 @@
           <li class="nav-item titulo-navbar"><a class="nav-link active" href="#">Séries</a></li>
           <li class="nav-item titulo-navbar"><a class="nav-link active" href="#">Filmes</a></li>
           <li class="nav-item titulo-navbar"><a class="nav-link active" href="#">Downloads</a></li>
-          <li class="nav-item titulo-navbar">
-            <a class="nav-link active" href="#" title="Pesquisar">
-              <i class="bi bi-search"></i>
-            </a>
-          </li>
+          <li class="nav-item titulo-navbar"><a class="nav-link active" href="#" title="Pesquisar"><i class="bi bi-search"></i></a></li>
           <li class="nav-item titulo-navbar"><a class="nav-link active" href="#">Em Cartaz</a></li>
 
-          <!-- Botão do Perfil -->
+          <!-- Botão Perfil -->
           <li class="nav-item ms-3">
-            <button id="btn-perfil" class="btn btn-outline-warning d-flex align-items-center gap-2"
-              style="border-radius: 50px; padding: 4px 8px;">
-              <img id="perfil-avatar" src="imagens/default-avatar.png" alt="Perfil"
-                style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover;" />
+            <button id="btn-perfil" class="btn btn-outline-warning d-flex align-items-center gap-2" style="border-radius: 50px; padding: 4px 8px;" title="Menu de Perfis">
+              <img id="perfil-avatar" src="imagens/default-avatar.png" alt="Perfil" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover;" />
               <span class="d-none d-md-inline">Perfis</span>
             </button>
           </li>
@@ -63,7 +53,7 @@
 
   <!-- Carrossel de tendências -->
   <section class="carousel-extended Slides container mt-5 pt-4">
-    <div id="trendCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="6000">
+    <div id="trendCarousel" class="carousel slide" data-bs-interval="6000">
       <div class="carousel-inner" id="carousel-trends">
         <!-- Slides inseridos via JS -->
       </div>
@@ -97,10 +87,15 @@
     <div id="series-container" class="movie-row"></div>
   </section>
 
+  <!-- Seção Gêneros Cinematográficos -->
+<section class="container mt-4">
+  <h2 class="text">Gêneros Cinematográficos</h2>
+  <div id="genres-container" class="genres-row"></div>
+</section>
+
   <!-- Scripts -->
   <script src="script.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
-
 </html>
