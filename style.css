@@ -21,31 +21,66 @@ body {
 
 /* Navbar */
 .navbar {
-  background: linear-gradient(to top, rgba(38, 226, 13, 0.089) 0%, rgb(2, 15, 0) 100%);
+  background: linear-gradient(to top, rgba(38, 226, 13, 0.1), rgb(2, 15, 0));
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
-.navbar-brand img {
-  width: 40px;
-  margin-right: 10px;
+/* Ajustar sombra e espaçamento do toggler para destacar */
+.navbar-toggler {
+  border-color: #ffd700;
 }
 
-.titulo-navbar {
-  transition: text-shadow .3s ease;
+.navbar-toggler-icon {
+  filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(93deg) brightness(103%) contrast(103%);
 }
 
-.titulo-navbar:hover {
-  text-shadow: 0 0 5px rgba(255, 215, 0, .6), 0 0 10px rgba(255, 223, 100, .4);
-}
-
+/* Links da navbar */
 .navbar-nav .nav-link {
   color: #fff !important;
-  transition: color 0.2s;
+  transition: color 0.3s ease;
 }
 
 .navbar-nav .nav-link.active,
-.navbar-nav .nav-link:focus,
-.navbar-nav .nav-link:hover {
-  color: #FFD700 !important;
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link:focus {
+  color: #ffd700 !important;
+}
+
+/* Títulos navbar */
+.titulo-navbar {
+  transition: text-shadow 0.3s ease;
+}
+
+.titulo-navbar:hover {
+  text-shadow: 0 0 6px rgba(255, 215, 0, 0.7);
+}
+
+/* Formulário de busca */
+#search-form .form-control {
+  border-radius: 25px;
+  border: 1.5px solid #ffd700;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+#search-form .form-control::placeholder {
+  color: #ffe;
+}
+
+#search-form .form-control:focus {
+  background-color: rgba(255, 255, 255, 0.25);
+  border-color: #fff200;
+  color: #fff;
+  box-shadow: 0 0 6px #fff200;
+  outline: none;
+}
+
+#search-form {
+  flex-grow: 1;         /* faz o form ocupar o máximo possível */
+  max-width: 450px;     /* limite máximo pra não ficar gigante */
+  min-width: 150px;     /* limite mínimo pra não sumir */
+  width: 100%;          /* ocupar todo espaço do container */
 }
 
 /* Títulos */
@@ -154,30 +189,39 @@ body {
   border-radius: 6px;
 }
 
+/* Gêneros - linha horizontal com scroll oculto */
 .genres-row {
   display: flex;
-  gap: 18px;
+  flex-direction: row;
+  gap: 16px;
   overflow-x: auto;
+  overflow-y: hidden;
   padding: 16px 0;
-  scrollbar-width: none;
+  scrollbar-width: none;   /* Firefox */
+  -ms-overflow-style: none;  /* IE 10+ */
+  margin-top: 0;
+
+  overscroll-behavior-x: contain; /* impede "scroll vazando" */
+  scroll-behavior: smooth; /* opcional */
 }
 
 .genres-row::-webkit-scrollbar {
-  display: none;
+  display: none; /* Chrome, Safari, Opera */
 }
 
 .genre-card {
-  flex: 0 0 auto;
-  width: 140px;
+  min-width: 140px;
+  max-width: 140px;
   height: 140px;
+  flex: 0 0 auto;
   border-radius: 50%;
   overflow: hidden;
   position: relative;
-  background-color: #222;
+  background-color: #FFD700;
   cursor: pointer;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
-  box-shadow: 0 6px 18px rgba(2, 6, 23, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.03);
+  box-shadow: 0 6px 18px rgba(218, 214, 10, 0.6);
+  border: 1px solid rgb(182, 164, 0);
 }
 
 .genre-card:hover {
@@ -209,4 +253,77 @@ body {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+}
+
+/* ===== RESPONSIVIDADE ===== */
+
+/* Telas até 768px (tablets e mobiles) */
+@media (max-width: 768px) {
+  /* Ajusta tamanho dos títulos */
+  .text {
+    font-size: 1.4rem;
+  }
+
+  /* Navbar título e logo menor */
+  .navbar-brand {
+    font-size: 1.2rem;
+  }
+
+  /* Barra de pesquisa ocupa toda largura possível e com margens menores */
+  #search-form {
+    max-width: 100%;
+    margin: 0 8px;
+    min-width: 0;
+  }
+
+  #search-form .form-control {
+    font-size: 1rem;
+    padding: 6px 12px;
+  }
+
+  /* Cards menores */
+  .movie-row .card {
+    min-width: 110px;
+    max-width: 110px;
+  }
+
+  /* Cards de gênero menores */
+  .genre-card {
+    min-width: 100px;
+    max-width: 100px;
+    height: 100px;
+  }
+
+  /* Containers com padding horizontal menor */
+  .container {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
+
+/* Telas muito pequenas até 480px (celulares) */
+@media (max-width: 480px) {
+  /* Quebra a linha dos cards para melhor visualização */
+  .movie-row {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .movie-row .card {
+    flex: 1 1 45%;
+    max-width: none;
+    margin-bottom: 16px;
+  }
+
+  /* Navbar: mais espaçamento para links, texto menor */
+  .navbar-nav .nav-link {
+    padding: 8px 4px;
+    font-size: 0.9rem;
+  }
+
+  /* Barra de pesquisa com fonte e padding menores */
+  #search-form .form-control {
+    font-size: 0.9rem;
+    padding: 5px 10px;
+  }
 }

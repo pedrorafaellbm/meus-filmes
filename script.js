@@ -1,4 +1,4 @@
-const API_KEY = '6f0126d646958ec832fa374ac8d708e5'
+const API_KEY = '6f0126d646958ec832fa374ac8d708e5';
 const userLang = navigator.language || 'pt-BR';
 
 function buildUrl(path, params = {}) {
@@ -103,7 +103,6 @@ function loadTrendingCarousel() {
 
       carousel.innerHTML = slides;
 
-      // Re-inicializa o carrossel Bootstrap para ativar setas e funcionalidades
       bootstrap.Carousel.getInstance(carouselWrapper)?.dispose();
       new bootstrap.Carousel(carouselWrapper);
 
@@ -137,6 +136,48 @@ async function fetchAllSeries() {
     page++;
   }
   return allSeries;
+}
+
+async function fetchGenresWithPoster() {
+  try {
+    const genreRes = await fetch(`https://api.themoviedb.org/3/genre/movie/list?api_key=${API_KEY}&language=pt-BR`);
+    const genreData = await genreRes.json();
+    const genres = genreData.genres;
+
+    const container = document.getElementById('genres-container');
+    container.innerHTML = '';
+    container.style.display = 'flex'; // linha horizontal
+    container.style.gap = '16px';
+
+    for (const genre of genres) {
+      // Pega o filme mais popular do gênero para a imagem
+      const movieRes = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&with_genres=${genre.id}&sort_by=popularity.desc&language=pt-BR&page=1`);
+      const movieData = await movieRes.json();
+      const movie = movieData.results?.[0];
+
+      if (!movie || !movie.poster_path) continue;
+
+      const card = document.createElement('button');
+      card.className = 'genre-card';
+      card.title = `${genre.name} — ${movie.title}`;
+      card.type = 'button';
+
+      card.innerHTML = `
+        <img src="https://image.tmdb.org/t/p/w300${movie.poster_path}" alt="${genre.name}" />
+        <span class="genre-label">${genre.name}</span>
+      `;
+
+      card.onclick = () => {
+        // Navega para a página interna do gênero, passando id e nome
+        const url = `genero.html?id=${genre.id}&name=${encodeURIComponent(genre.name)}`;
+        window.location.href = url;
+      };
+
+      container.appendChild(card);
+    }
+  } catch (err) {
+    console.error('Erro ao carregar gêneros:', err);
+  }
 }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -188,50 +229,7 @@ document.addEventListener('DOMContentLoaded', function () {
       window.location.href = 'perfis.html';
     });
   }
-});
 
-async function fetchGenresWithPoster() {
-  try {
-    const genreRes = await fetch(`https://api.themoviedb.org/3/genre/movie/list?api_key=${API_KEY}&language=pt-BR`);
-    const genreData = await genreRes.json();
-    const genres = genreData.genres;
-
-    const container = document.getElementById('genres-container');
-    container.innerHTML = '';
-
-    for (const genre of genres) {
-      // Pega o filme mais popular do gênero para a imagem
-      const movieRes = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&with_genres=${genre.id}&sort_by=popularity.desc&language=pt-BR&page=1`);
-      const movieData = await movieRes.json();
-      const movie = movieData.results?.[0];
-
-      if (!movie || !movie.poster_path) continue;
-
-      const card = document.createElement('button');
-      card.className = 'genre-card';
-      card.title = `${genre.name} — ${movie.title}`;
-      card.type = 'button';
-
-      card.innerHTML = `
-        <img src="https://image.tmdb.org/t/p/w300${movie.poster_path}" alt="${genre.name}">
-        <span class="genre-label">${genre.name}</span>
-      `;
-
-      card.onclick = () => {
-        // Exemplo de ação: abrir página do gênero no TMDb
-        window.open(`https://www.themoviedb.org/genre/${genre.id}-${genre.name.toLowerCase()}`, '_blank');
-      };
-
-      container.appendChild(card);
-    }
-  } catch (err) {
-    console.error('Erro ao carregar gêneros:', err);
-  }
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  // Seu código atual...
-
-  // Carrega os gêneros com capas circulares
+  // Chama a função que carrega os gêneros com capa e clique
   fetchGenresWithPoster();
 });
