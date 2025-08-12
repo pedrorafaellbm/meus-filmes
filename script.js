@@ -23,14 +23,13 @@ function loadCardMovies(filmes, containerId) {
     const imageURL = 'https://media.themoviedb.org/t/p/w440_and_h660_face';
     const title = filme.title || filme.name || 'Sem título';
     const id = filme.id;
-    const movieUrl = filme.title
-      ? `https://www.themoviedb.org/movie/${id}`
-      : `https://www.themoviedb.org/tv/${id}`;
+    // Aqui a URL foi alterada para a página local de avaliação, com o id como query param
+    const movieUrl = `avaliacao.html?id=${id}`;
     const percent = Math.round(filme.vote_average * 10);
 
     divCard.innerHTML = `
       <div class="img-wrapper">
-        <a href="${movieUrl}" target="_blank" title="${title}">
+        <a href="${movieUrl}" title="${title}">
           <img
             src="${imageURL}${filme.poster_path}"
             class="card-img-top"
