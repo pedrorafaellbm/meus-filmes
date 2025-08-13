@@ -1,7 +1,3 @@
-// Essa lista de perfis será salva no localStorage por usuário
-// Vamos supor que o usuário está salvo assim:
-// { username: "...", email: "...", password: "...", perfis: [ { nome: "Lucas", avatar: "url" }, ... ] }
-
 const storageKey = 'usuario';
 
 // Função para pegar usuário do localStorage
@@ -34,7 +30,7 @@ function carregarPerfis() {
     div.title = perfil.nome;
     div.dataset.index = i;
 
-    // Pode trocar por avatares diferentes
+    // Avatar dinâmico (gera imagem única por nome)
     div.innerHTML = `
       <img src="https://i.pravatar.cc/150?u=${encodeURIComponent(perfil.nome)}" alt="${perfil.nome}" />
       <div class="perfil-nome">${perfil.nome}</div>
@@ -42,17 +38,15 @@ function carregarPerfis() {
 
     div.addEventListener('click', () => {
       alert(`Entrando no perfil: ${perfil.nome}`);
-      // Aqui você pode redirecionar para a home do site, ou guardar perfil selecionado
-      // Exemplo:
       localStorage.setItem('perfil-selecionado', JSON.stringify(perfil));
-      window.location.href = 'index.html'; // Voltar para a home com perfil selecionado
+      window.location.href = 'index.html';
     });
 
     container.appendChild(div);
   });
 }
 
-// Adicionar perfil novo
+// Adicionar novo perfil
 function adicionarPerfil(nome) {
   if (!nome || nome.trim().length === 0) return false;
   const usuario = getUsuario();
@@ -60,6 +54,7 @@ function adicionarPerfil(nome) {
 
   if (!usuario.perfis) usuario.perfis = [];
 
+  // Verifica se nome já existe
   if (usuario.perfis.find(p => p.nome.toLowerCase() === nome.toLowerCase())) {
     alert('Perfil já existe com esse nome.');
     return false;
@@ -71,7 +66,18 @@ function adicionarPerfil(nome) {
   return true;
 }
 
+// Executa após carregar a página
 document.addEventListener('DOMContentLoaded', () => {
+  // ✅ Cria um usuário padrão se não existir
+  if (!getUsuario()) {
+    setUsuario({
+      username: 'teste',
+      email: 'teste@email.com',
+      password: '1234',
+      perfis: []
+    });
+  }
+
   carregarPerfis();
 
   const modalElement = document.getElementById('modalPerfil');

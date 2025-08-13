@@ -1,0 +1,84 @@
+body {
+  background-color: #011301;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 2rem;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.btn-voltar {
+  background-color: #ffd700;
+  color: #133a03;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 8px;
+  text-decoration: none;
+  box-shadow: 0 0 8px #ffd700aa;
+  user-select: none;
+  transition: background-color 0.3s ease;
+}
+
+.btn-voltar:hover {
+  background-color: #e6c200;
+}
+
+h1 {
+  margin: 0;
+}
+
+.movies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill,minmax(140px,1fr));
+  gap: 1rem;
+}
+
+.card {
+  background: #222;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 0 10px #444;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px #ffd700;
+}
+
+.card img {
+  width: 100%;
+  height: 210px;
+  object-fit: cover;
+}
+
+.card .title {
+  padding: 0.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #ffd700;
+  text-align: center;
+}
+
+.btn-load-more {
+  margin-top: 2rem;
+  background-color: #ffd700;
+  color: #133a03;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  padding: 0.7rem 1.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-load-more:hover {
+  background-color: #e6c200;
+}

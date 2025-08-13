@@ -41,27 +41,28 @@ async function loadSeriesByGenre(genreId) {
   return data.results;
 }
 
+// Modifiquei esta função para redirecionar para avaliacao.html
 function createCard(item, type = 'movie') {
   const card = document.createElement('div');
   card.className = 'card movie-card-interactive';
 
   const title = item.title || item.name || 'Sem título';
   const id = item.id;
-  const url = type === 'movie'
-    ? `https://www.themoviedb.org/movie/${id}`
-    : `https://www.themoviedb.org/tv/${id}`;
 
   card.innerHTML = `
-    <div class="img-wrapper">
-      <a href="${url}" target="_blank" title="${title}">
-        <img
-          src="https://image.tmdb.org/t/p/w440_and_h660_face${item.poster_path}"
-          alt="${title}"
-          class="card-img-top"
-        />
-      </a>
+    <div class="img-wrapper" title="${title}">
+      <img
+        src="https://image.tmdb.org/t/p/w440_and_h660_face${item.poster_path}"
+        alt="${title}"
+        class="card-img-top"
+      />
     </div>
   `;
+
+  // Redireciona para a sua página de avaliação com os parâmetros
+  card.addEventListener('click', () => {
+    window.location.href = `avaliacao.html?id=${id}&type=${type}`;
+  });
 
   return card;
 }
