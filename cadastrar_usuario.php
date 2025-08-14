@@ -18,14 +18,17 @@ try {
         echo "Preencha todos os campos.";
         exit;
     }
-    if (strlen($username) < 20) {
-        echo "O nome de usuário precisa ter pelo menos 20 caracteres.";
+
+    // Mínimo de 8 caracteres
+    if (strlen($username) < 8) {
+        echo "O nome de usuário precisa ter pelo menos 8 caracteres.";
         exit;
     }
-    if (strlen($password) < 26) {
-        echo "A senha precisa ter pelo menos 26 caracteres.";
+    if (strlen($password) < 8) {
+        echo "A senha precisa ter pelo menos 8 caracteres.";
         exit;
     }
+
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         echo "E-mail inválido.";
         exit;
@@ -47,3 +50,4 @@ try {
 } catch (PDOException $e) {
     echo "Erro ao conectar: " . $e->getMessage();
 }
+?>
