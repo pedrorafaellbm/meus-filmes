@@ -12,14 +12,24 @@ document.getElementById('register-form').addEventListener('submit', function (e)
     return;
   }
 
-  const user = { username, email, password };
-  localStorage.setItem('usuario', JSON.stringify(user));
+  // Enviar dados para o PHP
+  fetch('cadastrar_usuario.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: `username=${encodeURIComponent(username)}&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
+  })
+  .then(response => response.text())
+  .then(data => {
+    document.getElementById('mensagem').innerText = data;
 
-  document.getElementById('mensagem').innerText = currentLang === 'pt'
-    ? 'Conta criada com sucesso!'
-    : 'Account created successfully!';
-    
-  this.reset();
+    // Limpar formulário se cadastro bem-sucedido
+    if (data.toLowerCase().includes('sucesso') || data.toLowerCase().includes('successfully')) {
+      this.reset();
+    }
+  })
+  .catch(error => console.error('Erro:', error));
 });
 
 // Idioma
