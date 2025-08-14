@@ -1,0 +1,56 @@
+body {
+  background: url('imagens/fundo.png') no-repeat center center fixed;
+  background-size: cover;
+  color: white;
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  background-color: black;
+}
+
+.perfil-container {
+  background-color: rgba(1, 31, 6, 0.867);
+  padding: 2rem;
+  border-radius: 10px;
+  max-width: 600px;
+  width: 100%;
+}
+
+.perfil {
+  background-color: rgba(255, 215, 0, 0.15);
+  border-radius: 10px;
+  width: 120px;
+  height: 140px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.perfil:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 10px #ffd700aa;
+}
+
+.perfil img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-bottom: 0.5rem;
+  object-fit: cover;
+  background-color: #444;
+}
+
+.perfil-nome {
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #ffd700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

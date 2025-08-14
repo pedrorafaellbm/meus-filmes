@@ -30,14 +30,12 @@ function carregarPerfis() {
     div.title = perfil.nome;
     div.dataset.index = i;
 
-    // Avatar dinâmico (gera imagem única por nome)
     div.innerHTML = `
       <img src="https://i.pravatar.cc/150?u=${encodeURIComponent(perfil.nome)}" alt="${perfil.nome}" />
       <div class="perfil-nome">${perfil.nome}</div>
     `;
 
     div.addEventListener('click', () => {
-      alert(`Entrando no perfil: ${perfil.nome}`);
       localStorage.setItem('perfil-selecionado', JSON.stringify(perfil));
       window.location.href = 'index.html';
     });
@@ -54,7 +52,6 @@ function adicionarPerfil(nome) {
 
   if (!usuario.perfis) usuario.perfis = [];
 
-  // Verifica se nome já existe
   if (usuario.perfis.find(p => p.nome.toLowerCase() === nome.toLowerCase())) {
     alert('Perfil já existe com esse nome.');
     return false;
@@ -68,16 +65,6 @@ function adicionarPerfil(nome) {
 
 // Executa após carregar a página
 document.addEventListener('DOMContentLoaded', () => {
-  // ✅ Cria um usuário padrão se não existir
-  if (!getUsuario()) {
-    setUsuario({
-      username: 'teste',
-      email: 'teste@email.com',
-      password: '1234',
-      perfis: []
-    });
-  }
-
   carregarPerfis();
 
   const modalElement = document.getElementById('modalPerfil');

@@ -1,101 +1,57 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cine-Vision</title>
   <link rel="stylesheet" href="style.css" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous" />
-  <link rel="icon" type="image/png" href="imagens/movie.png" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="movie.png" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
 </head>
-
 <body>
-
-  <!-- Vídeo de fundo -->
   <video autoplay muted loop id="bg-video">
-    <source src="./140151-865442951.mp4" type="video/mp4" />
+    <source src="140151-865442951.mp4" type="video/mp4" />
     Seu navegador não suporta vídeos em HTML5.
   </video>
 
-  <!-- Navbar fixa -->
-<nav class="navbar navbar-expand-lg fixed-top bg-transparent">
-  <div class="container d-flex align-items-center justify-content-between flex-nowrap">
-    <!-- Logo e título -->
-    <a class="navbar-brand d-flex align-items-center flex-shrink-0" href="index.html">
-      <img src="imagens/movie.png" alt="Cine-Vision" class="me-2" style="width: 40px;" />
-      <span class="fs-4 text-warning fw-bold titulo-navbar m-0">Cine-Vision</span>
-    </a>
+  <nav class="navbar navbar-expand-lg fixed-top bg-transparent">
+    <div class="container d-flex align-items-center justify-content-between flex-nowrap">
+      <a class="navbar-brand d-flex align-items-center flex-shrink-0" href="index.html">
+        <img src="movie.png" alt="Cine-Vision" class="me-2" style="width: 40px;" />
+        <span class="fs-4 text-warning fw-bold titulo-navbar m-0">Cine-Vision</span>
+      </a>
 
-    <!-- Barra de pesquisa sempre visível, ocupa espaço central -->
-    <form
-      id="search-form"
-      class="d-flex flex-grow-1 mx-3"
-      role="search"
-      style="min-width: 150px; max-width: 450px; width: 100%;"
-    >
-      <input
-        id="search-input"
-        class="form-control"
-        type="search"
-        placeholder="Buscar filmes..."
-        aria-label="Buscar"
-      />
-    </form>
+      <form id="search-form" class="d-flex flex-grow-1 mx-3" role="search" style="min-width: 150px; max-width: 450px; width: 100%;">
+        <input id="search-input" class="form-control" type="search" placeholder="Buscar filmes..." aria-label="Buscar" />
+      </form>
 
-    <!-- Botão toggler do menu hamburguer -->
-    <button
-      class="navbar-toggler border-warning"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarNav"
-      aria-controls="navbarNav"
-      aria-expanded="false"
-      aria-label="Alternar navegação"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
+      <button class="navbar-toggler border-warning" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Alternar navegação">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-    <!-- Menu colapsável -->
-    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-      <ul class="navbar-nav align-items-center flex-nowrap">
-        <li class="nav-item titulo-navbar"><a class="nav-link active px-3" href="./index.html">Início</a></li>
-        <li class="nav-item titulo-navbar"><a class="nav-link active px-3" href="serie.html">Séries</a></li>
-        <li class="nav-item titulo-navbar"><a class="nav-link active px-3" href="filme.html">Filmes</a></li>
-        <li class="nav-item titulo-navbar"><a class="nav-link active px-3" href="pesquisa.html" title="Pesquisar"><i class="bi bi-search"></i></a></li>
-        <li class="nav-item titulo-navbar"><a class="nav-link active px-3" href="#">Em Cartaz</a></li>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav align-items-center flex-nowrap">
+          <li class="nav-item titulo-navbar"><a class="nav-link active px-3" href="index.html">Início</a></li>
+          <li class="nav-item titulo-navbar"><a class="nav-link active px-3" href="serie.html">Séries</a></li>
+          <li class="nav-item titulo-navbar"><a class="nav-link active px-3" href="filme.html">Filmes</a></li>
+          <li class="nav-item titulo-navbar"><a class="nav-link active px-3" href="pesquisa.html" title="Pesquisar"><i class="bi bi-search"></i></a></li>
+          <li class="nav-item titulo-navbar"><a class="nav-link active px-3" href="#">Em Cartaz</a></li>
 
-        <!-- Botão Perfil -->
-        <li class="nav-item ms-3 flex-shrink-0">
-          <button
-            id="btn-perfil"
-            class="btn btn-outline-warning d-flex align-items-center gap-2"
-            style="border-radius: 50px; padding: 4px 12px;"
-            title="Menu de Perfis"
-          >
-            <img
-              id="perfil-avatar"
-              src="imagens/default-avatar.png"
-              alt="Perfil"
-              style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover;"
-            />
-            <span class="d-none d-md-inline">Perfis</span>
-          </button>
-        </li>
-      </ul>
+          <li class="nav-item ms-3 flex-shrink-0">
+            <button id="btn-perfil" class="btn btn-outline-warning d-flex align-items-center gap-2" style="border-radius: 50px; padding: 4px 12px;" title="Menu de Perfis">
+              <img id="perfil-avatar" src="default-avatar.png" alt="Perfil" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover;" />
+              <span class="d-none d-md-inline">Perfis</span>
+            </button>
+          </li>
+        </ul>
+      </div>
     </div>
-  </div>
-</nav>
+  </nav>
 
-  <!-- Carrossel de tendências -->
   <section class="carousel-extended Slides container mt-5 pt-4">
     <div id="trendCarousel" class="carousel slide" data-bs-interval="6000">
-      <div class="carousel-inner" id="carousel-trends">
-        <!-- Slides inseridos via JS -->
-      </div>
-      <!-- Controles do carrossel -->
+      <div class="carousel-inner" id="carousel-trends"></div>
       <button class="carousel-control-prev" type="button" data-bs-target="#trendCarousel" data-bs-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Anterior</span>
@@ -107,33 +63,27 @@
     </div>
   </section>
 
-  <!-- Filmes Populares -->
   <section class="container">
     <h2 class="text">Populares!</h2>
     <div id="popular-container" class="movie-row"></div>
   </section>
 
-  <!-- Filmes em cartaz -->
   <section class="container">
     <h2 class="text">Filmes!</h2>
     <div id="movies-container" class="movie-row"></div>
   </section>
 
-  <!-- Séries populares -->
   <section class="container">
     <h2 class="text">Séries!</h2>
     <div id="series-container" class="movie-row"></div>
   </section>
 
-  <!-- Seção Gêneros Cinematográficos -->
   <section class="container">
     <h2 class="text">Gêneros</h2>
     <div id="genres-container" class="genres-row"></div>
   </section>
 
-  <!-- Scripts -->
   <script src="script.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>
