@@ -1,84 +1,137 @@
+/* Reset e configuração básica */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-  background-color: #011301;
-  color: #fff;
   font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 2rem;
-}
-
-.navbar {
+  min-height: 100vh;
   display: flex;
+  justify-content: center;
   align-items: center;
-  gap: 1rem;
-  margin-bottom: 1rem;
+  padding: 2rem;
+  background-image: url('imagens/fundo.png');
+  background-size: cover;          /* Preenche a tela toda */
+  background-position: center;     /* Centraliza a imagem */
+  background-repeat: no-repeat;    /* Não repete */
+  color: #fff;
+  position: relative;
 }
 
-.btn-voltar {
-  background-color: #ffd700;
-  color: #133a03;
-  font-weight: 600;
-  padding: 6px 14px;
-  border-radius: 8px;
-  text-decoration: none;
-  box-shadow: 0 0 8px #ffd700aa;
-  user-select: none;
-  transition: background-color 0.3s ease;
-}
-
-.btn-voltar:hover {
-  background-color: #e6c200;
-}
-
-h1 {
-  margin: 0;
-}
-
-.movies-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill,minmax(140px,1fr));
-  gap: 1rem;
-}
-
-.card {
-  background: #222;
-  border-radius: 12px;
-  overflow: hidden;
-  cursor: pointer;
-  box-shadow: 0 0 10px #444;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 15px #ffd700;
-}
-
-.card img {
+/* Sobreposição escura */
+.bg-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
-  height: 210px;
-  object-fit: cover;
+  height: 100%;
+  background-color: rgba(1, 21, 6, 0.85);
+  z-index: 0;
 }
 
-.card .title {
-  padding: 0.5rem;
-  font-size: 1rem;
-  font-weight: bold;
+/* Navbar */
+.navbar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 0.5rem 2rem;
+  z-index: 10;
+}
+
+.titulo-navbar {
   color: #ffd700;
+  font-weight: bold;
+  font-size: 1.4rem;
+}
+
+.language-switcher button {
+  border: 1px solid #ffd700;
+  background: transparent;
+  color: #ffd700;
+  padding: 5px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.language-switcher button:hover {
+  background-color: #ffd700;
+  color: black;
+}
+
+/* Formulário */
+.cadastro-container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 400px;
+  margin-top: 100px;
+  padding: 50px 30px;
+  background-color: rgba(0,0,0,0.85);
+  border-radius: 10px;
+  box-shadow: 0 0 30px rgba(0,0,0,0.5);
   text-align: center;
 }
 
-.btn-load-more {
-  margin-top: 2rem;
-  background-color: #ffd700;
-  color: #133a03;
-  font-weight: 600;
-  border: none;
-  border-radius: 8px;
-  padding: 0.7rem 1.5rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+.cadastro-container h1.logo {
+  color: #ffd700;
+  font-size: 1.8rem;
+  margin-bottom: 20px;
 }
 
-.btn-load-more:hover {
-  background-color: #e6c200;
+.cadastro-form h2 {
+  color: #ffd700;
+  margin-bottom: 20px;
+}
+
+.cadastro-form input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 16px;
+  border-radius: 6px;
+  border: none;
+  font-size: 1rem;
+  background-color: #333;
+  color: #fff;
+}
+
+.cadastro-form button {
+  width: 100%;
+  padding: 12px;
+  background-color: #bdab04;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.3s;
+}
+
+.cadastro-form button:hover {
+  background-color: #047725;
+}
+
+.mensagem {
+  margin-top: 12px;
+  font-size: 1rem;
+  color: #0f0;
+}
+
+/* Link de login */
+.login-link {
+  margin-top: 16px;
+  font-size: 0.9rem;
+  color: #aaa;
+}
+
+.login-link a {
+  color: #fff;
+  text-decoration: underline;
 }

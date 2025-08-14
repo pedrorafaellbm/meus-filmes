@@ -1,3 +1,4 @@
+// Envio do formulário
 document.getElementById('register-form').addEventListener('submit', function (e) {
   e.preventDefault();
 
@@ -12,29 +13,29 @@ document.getElementById('register-form').addEventListener('submit', function (e)
     return;
   }
 
-  // Enviar dados para o PHP
   fetch('cadastrar_usuario.php', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded'
-    },
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: `username=${encodeURIComponent(username)}&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
   })
   .then(response => response.text())
   .then(data => {
     document.getElementById('mensagem').innerText = data;
 
-    // Limpar formulário se cadastro bem-sucedido
     if (data.toLowerCase().includes('sucesso') || data.toLowerCase().includes('successfully')) {
       this.reset();
     }
   })
-  .catch(error => console.error('Erro:', error));
+  .catch(error => {
+    console.error('Erro:', error);
+    document.getElementById('mensagem').innerText = currentLang === 'pt' 
+      ? 'Erro ao conectar com o servidor.' 
+      : 'Error connecting to server.';
+  });
 });
 
-// Idioma
+// Idioma PT/EN
 let currentLang = 'pt';
-
 document.getElementById('lang-toggle').addEventListener('click', function () {
   currentLang = currentLang === 'pt' ? 'en' : 'pt';
 
