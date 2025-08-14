@@ -1,4 +1,4 @@
-/* Reset e configuração básica */
+
 * {
   margin: 0;
   padding: 0;
@@ -70,32 +70,45 @@ body {
   color: #fff;
 }
 
+.cadastro-form input::placeholder {
+  color: #bbb;
+}
+
 /* Botão */
 .cadastro-form button {
   width: 100%;
   padding: 12px;
-  background-color: #bdab04;
+  background-color: #bdab04; /* dourado mais escuro */
   color: white;
   font-weight: bold;
   border: none;
   border-radius: 6px;
   cursor: pointer;
   font-size: 1rem;
-  transition: background 0.3s;
+  transition: background 0.3s, transform 0.1s;
 }
 
 .cadastro-form button:hover {
-  background-color: #047725;
+  background-color: #047725; /* verde mais vibrante */
+  transform: scale(1.02);
 }
 
 /* Mensagem de erro/sucesso */
 .mensagem {
   margin-top: 12px;
   font-size: 1rem;
-  color: #0f0;
+  font-weight: bold;
 }
 
-/* Link de cadastro */
+.mensagem.erro {
+  color: #ff5555;
+}
+
+.mensagem.sucesso {
+  color: #00ff88;
+}
+
+/* Link de cadastro/login */
 .login-link {
   margin-top: 16px;
   font-size: 0.9rem;
@@ -105,4 +118,8 @@ body {
 .login-link a {
   color: #fff;
   text-decoration: underline;
+}
+
+.login-link a:hover {
+  color: #ffd700;
 }

@@ -19,13 +19,13 @@ try {
         exit;
     }
 
-    // Mínimo de 8 caracteres
-    if (strlen($username) < 8) {
-        echo "O nome de usuário precisa ter pelo menos 8 caracteres.";
+    if (strlen($username) > 20) {
+        echo "Nome de usuário deve ter no máximo 20 letras.";
         exit;
     }
-    if (strlen($password) < 8) {
-        echo "A senha precisa ter pelo menos 8 caracteres.";
+
+    if (strlen($password) > 26) {
+        echo "Senha deve ter no máximo 26 caracteres.";
         exit;
     }
 
@@ -43,6 +43,7 @@ try {
     }
 
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
     $stmt = $pdo->prepare("INSERT INTO usuarios (username, email, password) VALUES (?, ?, ?)");
     $stmt->execute([$username, $email, $hashedPassword]);
 

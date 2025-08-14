@@ -9,24 +9,23 @@ document.getElementById('login-form').addEventListener('submit', function(e) {
     return;
   }
 
-  // Enviar dados para o PHP
-  fetch('login_usuario.php', {
+  fetch('login.php', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded'
-    },
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`
   })
-  .then(response => response.text())
+  .then(res => res.text())
   .then(data => {
     document.getElementById('mensagem-login').innerText = data;
 
-    if (data.toLowerCase().includes('bem-vindo') || data.toLowerCase().includes('welcome')) {
-      // Redireciona para a página principal (exemplo)
-      setTimeout(() => {
-        window.location.href = 'index.html';
+    if (data.toLowerCase().includes('bem-sucedido') || data.toLowerCase().includes('sucesso')) {
+      setTimeout(() => { 
+        window.location.href = 'dashboard.html'; 
       }, 1000);
     }
   })
-  .catch(error => console.error('Erro:', error));
+  .catch(err => {
+    console.error(err);
+    document.getElementById('mensagem-login').innerText = 'Erro ao conectar com o servidor.';
+  });
 });
