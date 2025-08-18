@@ -17,26 +17,16 @@ function buildUrl(path, params = {}) {
 }
 
 function fetchDetails(id) {
-  // Tenta buscar filme, se não achar tenta série
   return fetch(buildUrl(`movie/${id}`))
-    .then(res => {
-      if (!res.ok) throw new Error('Not movie');
-      return res.json();
-    })
-    .catch(() => {
-      return fetch(buildUrl(`tv/${id}`)).then(res => {
-        if (!res.ok) throw new Error('Not found');
-        return res.json();
-      });
-    });
+    .then(res => { if (!res.ok) throw new Error('Not movie'); return res.json(); })
+    .catch(() => fetch(buildUrl(`tv/${id}`)).then(res => {
+      if (!res.ok) throw new Error('Not found'); return res.json();
+    }));
 }
 
 function fetchCast(id, type) {
   return fetch(buildUrl(`${type}/${id}/credits`))
-    .then(res => {
-      if (!res.ok) throw new Error('Erro ao buscar elenco');
-      return res.json();
-    })
+    .then(res => res.json())
     .then(data => data.cast || [])
     .catch(() => []);
 }
@@ -55,23 +45,39 @@ function mostrarDetalhes(data) {
 function mostrarElenco(cast) {
   const container = document.getElementById('cast');
   container.innerHTML = '';
-  if (cast.length === 0) {
-    container.innerHTML = '<p>Nenhum elenco disponível.</p>';
-    return;
-  }
+  if (!cast.length) { container.innerHTML = '<p>Nenhum elenco disponível.</p>'; return; }
   cast.slice(0, 10).forEach(actor => {
     const imgSrc = actor.profile_path
       ? `https://image.tmdb.org/t/p/w200${actor.profile_path}`
       : 'https://via.placeholder.com/120x160?text=Sem+Foto';
     const div = document.createElement('div');
     div.classList.add('cast-member');
-    div.innerHTML = `
-      <img src="${imgSrc}" alt="${actor.name}" />
-      <p>${actor.name}</p>
-      <small>${actor.character || ''}</small>
-    `;
+    div.innerHTML = `<img src="${imgSrc}" alt="${actor.name}" /><p>${actor.name}</p><small>${actor.character || ''}</small>`;
     container.appendChild(div);
   });
+}
+
+function mostrarTrailer(id, type) {
+  fetch(buildUrl(`${type}/${id}/videos`))
+    .then(res => res.json())
+    .then(data => {
+      const trailer = data.results.find(vid => vid.type === 'Trailer' && vid.site === 'YouTube');
+      const container = document.getElementById('trailer-container');
+      container.innerHTML = '';
+      if (trailer) {
+        const iframe = document.createElement('iframe');
+        iframe.width = "100%";
+        iframe.height = "400";
+        iframe.src = `https://www.youtube.com/embed/${trailer.key}`;
+        iframe.title = "Trailer";
+        iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+        iframe.allowFullscreen = true;
+        container.appendChild(iframe);
+      } else {
+        container.innerHTML = '<p>Nenhum trailer disponível.</p>';
+      }
+    })
+    .catch(() => document.getElementById('trailer-container').innerHTML = '<p>Erro ao carregar trailer.</p>');
 }
 
 function salvarAvaliacao(id, nota, comentario) {
@@ -89,30 +95,18 @@ function carregarAvaliacoes(id) {
 function mostrarAvaliacoes(avaliacoes) {
   const container = document.getElementById('avaliacoes');
   container.innerHTML = '';
-
-  if (avaliacoes.length === 0) {
-    container.innerHTML = '<p>Nenhuma avaliação até o momento.</p>';
-    return;
-  }
-
+  if (!avaliacoes.length) { container.innerHTML = '<p>Nenhuma avaliação até o momento.</p>'; return; }
   avaliacoes.forEach(av => {
     const div = document.createElement('div');
     div.classList.add('avaliacao');
-    div.innerHTML = `
-      <h5>Nota: ${av.nota} / 10</h5>
-      <p>${av.comentario}</p>
-      <small class="text-muted">Avaliado em: ${av.data}</small>
-    `;
+    div.innerHTML = `<h5>Nota: ${av.nota} / 10</h5><p>${av.comentario}</p><small class="text-muted">Avaliado em: ${av.data}</small>`;
     container.appendChild(div);
   });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
   const id = getIdFromURL();
-  if (!id) {
-    alert('ID do filme/série não fornecido na URL!');
-    return;
-  }
+  if (!id) { alert('ID do filme/série não fornecido na URL!'); return; }
 
   fetchDetails(id)
     .then(data => {
@@ -122,34 +116,20 @@ document.addEventListener('DOMContentLoaded', () => {
     .then(({ data, type }) => {
       fetchCast(id, type).then(cast => mostrarElenco(cast));
       mostrarAvaliacoes(carregarAvaliacoes(id));
+      mostrarTrailer(id, type);
     })
     .catch(() => alert('Erro ao carregar detalhes do filme/série.'));
 
   const form = document.getElementById('form-avaliacao');
   form.addEventListener('submit', (e) => {
     e.preventDefault();
-
-    const notaInput = document.getElementById('nota');
-    const comentarioInput = document.getElementById('comentario');
-
-    const nota = parseInt(notaInput.value);
-    const comentario = comentarioInput.value.trim();
-
-    if (nota < 1 || nota > 10) {
-      alert('Por favor, insira uma nota entre 1 e 10.');
-      return;
-    }
-
-    if (!comentario) {
-      alert('Por favor, escreva um comentário.');
-      return;
-    }
-
+    const nota = parseInt(document.getElementById('nota').value);
+    const comentario = document.getElementById('comentario').value.trim();
+    if (nota < 1 || nota > 10) { alert('Por favor, insira uma nota entre 1 e 10.'); return; }
+    if (!comentario) { alert('Por favor, escreva um comentário.'); return; }
     salvarAvaliacao(id, nota, comentario);
     mostrarAvaliacoes(carregarAvaliacoes(id));
-
-    notaInput.value = '';
-    comentarioInput.value = '';
+    document.getElementById('nota').value = '';
+    document.getElementById('comentario').value = '';
   });
 });
-
