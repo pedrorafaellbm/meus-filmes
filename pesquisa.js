@@ -40,7 +40,7 @@ form.addEventListener('submit', async (e) => {
       return;
     }
 
-    // Ordena por popularidade (decrescente)
+    // Ordena por popularidade
     combinedResults.sort((a,b) => b.popularity - a.popularity);
 
     // Exibir resultados
@@ -59,7 +59,6 @@ form.addEventListener('submit', async (e) => {
         <div class="title">${title}</div>
       `;
 
-      // Redireciona para sua página de avaliação passando id e type
       card.addEventListener('click', () => {
         window.location.href = `avaliacao.html?id=${item.id}&type=${item.type}`;
       });

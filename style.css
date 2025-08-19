@@ -1,4 +1,4 @@
-/* Vídeo de fundo */
+/* ===== Vídeo de fundo ===== */
 #bg-video {
   position: fixed;
   top: 0;
@@ -9,23 +9,22 @@
   z-index: -1;
 }
 
-/* Corrige o empurrão da navbar fixa */
+/* ===== Body ===== */
 body {
-  padding-top: 80px;
+  padding-top: 80px; /* espaço para navbar fixa */
   height: 100%;
-  background-color: rgb(1, 19, 1) !important;
+  background-color: rgb(1, 19, 1);
   color: #fff;
   margin: 0;
   font-family: Arial, sans-serif;
 }
 
-/* Navbar */
+/* ===== Navbar ===== */
 .navbar {
   background: linear-gradient(to top, rgba(38, 226, 13, 0.1), rgb(2, 15, 0));
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
 }
 
-/* Ajustar sombra e espaçamento do toggler para destacar */
 .navbar-toggler {
   border-color: #ffd700;
 }
@@ -34,7 +33,6 @@ body {
   filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(93deg) brightness(103%) contrast(103%);
 }
 
-/* Links da navbar */
 .navbar-nav .nav-link {
   color: #fff !important;
   transition: color 0.3s ease;
@@ -46,16 +44,15 @@ body {
   color: #ffd700 !important;
 }
 
-/* Títulos navbar */
 .titulo-navbar {
   transition: text-shadow 0.3s ease;
 }
 
 .titulo-navbar:hover {
-  text-shadow: 0 0 6px rgba(255, 215, 0, 0.7);
+  text-shadow: 0 0 6px rgba(255,215,0,0.7);
 }
 
-/* Formulário de busca */
+/* ===== Formulário de busca ===== */
 #search-form .form-control {
   border-radius: 25px;
   border: 1.5px solid #ffd700;
@@ -69,7 +66,7 @@ body {
 }
 
 #search-form .form-control:focus {
-  background-color: rgba(255, 255, 255, 0.25);
+  background-color: rgba(255,255,255,0.25);
   border-color: #fff200;
   color: #fff;
   box-shadow: 0 0 6px #fff200;
@@ -77,20 +74,20 @@ body {
 }
 
 #search-form {
-  flex-grow: 1;         /* faz o form ocupar o máximo possível */
-  max-width: 450px;     /* limite máximo pra não ficar gigante */
-  min-width: 150px;     /* limite mínimo pra não sumir */
-  width: 100%;          /* ocupar todo espaço do container */
+  flex-grow: 1;
+  max-width: 450px;
+  min-width: 150px;
+  width: 100%;
 }
 
-/* Títulos */
+/* ===== Títulos ===== */
 .text {
   font-size: 1.8rem;
-  color: #FFD700 !important;
+  color: #FFD700;
   margin-bottom: 0.5rem;
 }
 
-/* Containers principais */
+/* ===== Containers principais ===== */
 #popular-container,
 #movies-container,
 #series-container {
@@ -98,7 +95,7 @@ body {
   z-index: 1;
 }
 
-/* Filmes e séries */
+/* ===== Filmes e séries ===== */
 .movie-row {
   display: flex;
   flex-direction: row;
@@ -106,7 +103,6 @@ body {
   overflow-x: auto;
   padding: 16px 0;
   scrollbar-width: none;
-  margin-top: 0;
 }
 
 .movie-row::-webkit-scrollbar {
@@ -115,7 +111,7 @@ body {
 
 .movie-row .card {
   min-width: 140px;
-  max-width: 130px;
+  max-width: 140px;
   flex: 0 0 auto;
   margin: 0;
   border: none;
@@ -126,7 +122,7 @@ body {
 
 .movie-row .card-img-top {
   height: 220px;
-  width: 150px;
+  width: 140px;
   object-fit: cover;
   border-radius: 8px;
   transition: transform 0.2s, box-shadow 0.2s;
@@ -134,9 +130,10 @@ body {
 
 .movie-card-interactive:hover .card-img-top {
   transform: scale(1.08);
-  box-shadow: 0 4px 16px rgba(128, 0, 128, 0.3);
+  box-shadow: 0 4px 16px rgba(128,0,128,0.3);
 }
 
+/* ===== Badges ===== */
 .img-wrapper {
   position: relative;
   display: inline-block;
@@ -156,57 +153,36 @@ body {
   z-index: 2;
 }
 
-/* Carrossel */
+/* ===== Carrossel ===== */
 .carousel-extended {
   position: relative;
   z-index: 1;
-}
-
-.carousel-extended .carousel-item p,
-.carousel-extended .carousel-item .mb-1 {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
+  max-height: 400px; /* altura máxima corrigida */
   overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 500px;
-  margin-bottom: 0.5rem;
 }
 
-.carousel-extended .carousel-item h5 {
+.carousel-extended .carousel-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* mantém proporção */
+}
+
+.carousel-extended .carousel-caption h5 {
   font-size: 1.2rem;
-  margin-bottom: 0.5rem;
 }
 
-.carousel-extended .btn {
-  font-weight: bold;
-  padding: 0.5rem 1rem;
-}
-
-.ver-mais-btn {
-  padding: 0.4rem 0.5rem;
-  font-size: 1rem;
-  border-radius: 6px;
-}
-
-/* Gêneros - linha horizontal com scroll oculto */
+/* ===== Gêneros ===== */
 .genres-row {
   display: flex;
   flex-direction: row;
   gap: 16px;
   overflow-x: auto;
-  overflow-y: hidden;
   padding: 16px 0;
-  scrollbar-width: none;   /* Firefox */
-  -ms-overflow-style: none;  /* IE 10+ */
-  margin-top: 0;
-
-  overscroll-behavior-x: contain; /* impede "scroll vazando" */
-  scroll-behavior: smooth; /* opcional */
+  scrollbar-width: none;
 }
 
 .genres-row::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
+  display: none;
 }
 
 .genre-card {
@@ -220,13 +196,13 @@ body {
   background-color: #FFD700;
   cursor: pointer;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
-  box-shadow: 0 6px 18px rgba(218, 214, 10, 0.6);
-  border: 1px solid rgb(182, 164, 0);
+  box-shadow: 0 6px 18px rgba(218,214,10,0.6);
+  border: 1px solid rgb(182,164,0);
 }
 
 .genre-card:hover {
   transform: translateY(-6px) scale(1.05);
-  box-shadow: 0 12px 30px rgba(2, 6, 23, 0.75);
+  box-shadow: 0 12px 30px rgba(2,6,23,0.75);
 }
 
 .genre-card img {
@@ -235,7 +211,6 @@ body {
   object-fit: cover;
   border-radius: 50%;
   display: block;
-  box-shadow: inset 0 -24px 46px rgba(0, 0, 0, 0.35);
 }
 
 .genre-label {
@@ -243,7 +218,7 @@ body {
   bottom: 8px;
   left: 50%;
   transform: translateX(-50%);
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.6));
+  background: linear-gradient(180deg, rgba(0,0,0,0.3), rgba(0,0,0,0.6));
   padding: 6px 10px;
   border-radius: 999px;
   font-size: 0.82rem;
@@ -256,74 +231,19 @@ body {
 }
 
 /* ===== RESPONSIVIDADE ===== */
-
-/* Telas até 768px (tablets e mobiles) */
 @media (max-width: 768px) {
-  /* Ajusta tamanho dos títulos */
-  .text {
-    font-size: 1.4rem;
-  }
-
-  /* Navbar título e logo menor */
-  .navbar-brand {
-    font-size: 1.2rem;
-  }
-
-  /* Barra de pesquisa ocupa toda largura possível e com margens menores */
-  #search-form {
-    max-width: 100%;
-    margin: 0 8px;
-    min-width: 0;
-  }
-
-  #search-form .form-control {
-    font-size: 1rem;
-    padding: 6px 12px;
-  }
-
-  /* Cards menores */
-  .movie-row .card {
-    min-width: 110px;
-    max-width: 110px;
-  }
-
-  /* Cards de gênero menores */
-  .genre-card {
-    min-width: 100px;
-    max-width: 100px;
-    height: 100px;
-  }
-
-  /* Containers com padding horizontal menor */
-  .container {
-    padding-left: 10px;
-    padding-right: 10px;
-  }
+  .text { font-size: 1.4rem; }
+  .navbar-brand { font-size: 1.2rem; }
+  #search-form { max-width: 100%; margin: 0 8px; min-width: 0; }
+  #search-form .form-control { font-size: 1rem; padding: 6px 12px; }
+  .movie-row .card { min-width: 110px; max-width: 110px; }
+  .genre-card { min-width: 100px; max-width: 100px; height: 100px; }
+  .container { padding-left: 10px; padding-right: 10px; }
 }
 
-/* Telas muito pequenas até 480px (celulares) */
 @media (max-width: 480px) {
-  /* Quebra a linha dos cards para melhor visualização */
-  .movie-row {
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .movie-row .card {
-    flex: 1 1 45%;
-    max-width: none;
-    margin-bottom: 16px;
-  }
-
-  /* Navbar: mais espaçamento para links, texto menor */
-  .navbar-nav .nav-link {
-    padding: 8px 4px;
-    font-size: 0.9rem;
-  }
-
-  /* Barra de pesquisa com fonte e padding menores */
-  #search-form .form-control {
-    font-size: 0.9rem;
-    padding: 5px 10px;
-  }
+  .movie-row { flex-wrap: wrap; justify-content: center; }
+  .movie-row .card { flex: 1 1 45%; max-width: none; margin-bottom: 16px; }
+  .navbar-nav .nav-link { padding: 8px 4px; font-size: 0.9rem; }
+  #search-form .form-control { font-size: 0.9rem; padding: 5px 10px; }
 }

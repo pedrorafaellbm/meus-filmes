@@ -4,9 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Login - Cine-Vision</title>
-  <link rel="stylesheet" href="cadastro.css">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link rel="icon" type="image/png" href="movie.png" />
+  <link rel="stylesheet" href="login.css">
+  <link rel="icon" type="image/png" href="imagens/movie.png" />
 </head>
 <body>
   <div class="bg-overlay"></div>
@@ -22,5 +21,82 @@
     <p class="login-link">Não tem conta? <a href="cadastro.html">Criar conta</a></p>
   </div>
   <script src="login.js"></script>
+</body>
+</html>
+cadastro.html
+html
+Copiar
+Editar
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cadastro - Cine-Vision</title>
+  <link rel="stylesheet" href="login.css">
+  <link rel="icon" type="image/png" href="imagens/movie.png" />
+</head>
+<body>
+  <div class="bg-overlay"></div>
+  <div class="cadastro-container">
+    <h1 class="logo">Criar Conta</h1>
+    <form id="cadastro-form" class="cadastro-form">
+      <h2>Cadastro</h2>
+      <input type="text" id="cadastro-username" placeholder="Nome de usuário" required>
+      <input type="email" id="cadastro-email" placeholder="Email" required>
+      <input type="password" id="cadastro-password" placeholder="Senha" required>
+      <button type="submit">Cadastrar</button>
+      <p id="mensagem-cadastro" class="mensagem"></p>
+    </form>
+    <p class="login-link">Já tem conta? <a href="login.html">Entrar</a></p>
+  </div>
+  <script src="cadastro.js"></script>
+</body>
+</html>
+perfis.html
+html
+Copiar
+Editar
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Seleção de Perfil - Cine-Vision</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="perfis.css" />
+  <link rel="icon" type="image/png" href="imagens/movie.png" />
+</head>
+<body>
+  <div class="container perfil-container text-center">
+    <h1 class="mb-4 text-warning">Quem está assistindo?</h1>
+    <div id="perfil-lista" class="d-flex flex-wrap justify-content-center gap-4">
+      <!-- Perfis carregados aqui -->
+    </div>
+    <button id="btn-add-perfil" class="btn btn-outline-warning mt-4">Adicionar Perfil</button>
+  </div>
+
+  <!-- Modal para adicionar perfil -->
+  <div class="modal fade" id="modalPerfil" tabindex="-1" aria-labelledby="modalPerfilLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content bg-dark text-white">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalPerfilLabel">Novo Perfil</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        </div>
+        <div class="modal-body">
+          <input id="novoPerfilNome" type="text" class="form-control" placeholder="Nome do perfil" maxlength="20" />
+          <small class="text-muted">Máx 20 caracteres</small>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="salvarPerfil" class="btn btn-warning">Salvar</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="perfis.js"></script>
 </body>
 </html>

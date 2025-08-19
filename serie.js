@@ -31,7 +31,6 @@ async function loadSeries(page = 1) {
         <div class="title">${title}</div>
       `;
 
-      // Redireciona para página de avaliação
       card.addEventListener('click', () => {
         window.location.href = `avaliacao.html?id=${serie.id}&type=tv`;
       });
@@ -61,7 +60,6 @@ loadMoreBtn.addEventListener('click', () => {
   }
 });
 
-// Carregar primeira página ao abrir
 document.addEventListener('DOMContentLoaded', () => {
   loadSeries(currentPage);
 });

@@ -33,7 +33,7 @@ try {
         exit;
     }
 
-    $_SESSION['user_id'] = $userData['id'];
+    $_SESSION['usuario_id'] = $userData['id'];
     $_SESSION['username'] = $userData['username'];
     echo "Login bem-sucedido!";
 } catch (PDOException $e) {

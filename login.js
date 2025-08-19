@@ -20,7 +20,7 @@ document.getElementById('login-form').addEventListener('submit', function(e) {
 
     if (data.toLowerCase().includes('bem-sucedido') || data.toLowerCase().includes('sucesso')) {
       setTimeout(() => { 
-        window.location.href = 'dashboard.html'; 
+        window.location.href = 'perfis.html'; 
       }, 1000);
     }
   })
