@@ -1,6 +1,8 @@
 const API_KEY = '6f0126d646958ec832fa374ac8d708e5';
 const userLang = navigator.language || 'pt-BR';
+const IMAGE_BASE = 'https://image.tmdb.org/t/p/w440_and_h660_face';
 
+// Função para construir URLs da API
 function buildUrl(path, params = {}) {
   const url = new URL(`https://api.themoviedb.org/3/${path}`);
   url.searchParams.set('api_key', API_KEY);
@@ -11,39 +13,34 @@ function buildUrl(path, params = {}) {
   return url.toString();
 }
 
-function loadCardMovies(filmes, containerId) {
+// Função para criar cards de filmes/séries
+function loadCardMovies(items, containerId) {
   const container = document.getElementById(containerId);
   if (!container) return;
   container.innerHTML = '';
 
-  filmes.forEach(filme => {
+  items.forEach(item => {
     const divCard = document.createElement('div');
     divCard.className = 'card movie-card-interactive';
 
-    const imageURL = 'https://media.themoviedb.org/t/p/w440_and_h660_face';
-    const title = filme.title || filme.name || 'Sem título';
-    const id = filme.id;
-    // Aqui a URL foi alterada para a página local de avaliação, com o id como query param
+    const title = item.title || item.name || 'Sem título';
+    const id = item.id;
     const movieUrl = `avaliacao.html?id=${id}`;
-    const percent = Math.round(filme.vote_average * 10);
+    const percent = Math.round(item.vote_average * 10);
 
     divCard.innerHTML = `
       <div class="img-wrapper">
         <a href="${movieUrl}" title="${title}">
-          <img
-            src="${imageURL}${filme.poster_path}"
-            class="card-img-top"
-            alt="${title}"
-          />
+          <img src="${IMAGE_BASE}${item.poster_path}" class="card-img-top" alt="${title}" />
           <span class="badge badge-rating">${percent}%</span>
         </a>
       </div>
     `;
-
     container.appendChild(divCard);
   });
 }
 
+// Função de busca
 function searchMovies(query) {
   const popularContainer = document.getElementById('popular-container');
   fetch(buildUrl('search/movie', { query }))
@@ -60,6 +57,7 @@ function searchMovies(query) {
     });
 }
 
+// Carrossel de tendências
 function loadTrendingCarousel() {
   const carousel = document.getElementById('carousel-trends');
   const carouselWrapper = document.getElementById('trendCarousel');
@@ -73,7 +71,6 @@ function loadTrendingCarousel() {
       const slides = data.results.map((movie, idx) => {
         const shortOverview = movie.overview?.substring(0, 180) ?? '';
         const fullOverview = movie.overview ?? 'Sem descrição.';
-
         return `
           <div class="carousel-item${idx === 0 ? ' active' : ''}" style="position:relative; min-height:350px;">
             <div style="
@@ -101,7 +98,6 @@ function loadTrendingCarousel() {
       }).join('');
 
       carousel.innerHTML = slides;
-
       bootstrap.Carousel.getInstance(carouselWrapper)?.dispose();
       new bootstrap.Carousel(carouselWrapper);
 
@@ -124,6 +120,7 @@ function loadTrendingCarousel() {
     .catch(err => console.error('Erro ao carregar carrossel:', err));
 }
 
+// Séries Populares
 async function fetchAllSeries() {
   let allSeries = [], page = 1, totalPages = 1;
   while (page <= totalPages) {
@@ -137,23 +134,35 @@ async function fetchAllSeries() {
   return allSeries;
 }
 
+// Animes
+function loadAnime() {
+  fetch(buildUrl('discover/movie', { with_genres: 16, sort_by: 'popularity.desc', page: 1 }))
+    .then(res => res.json())
+    .then(data => loadCardMovies(data.results, 'anime-container'))
+    .catch(err => console.error('Erro ao carregar animes:', err));
+}
+
+// Documentários
+function loadDocumentaries() {
+  fetch(buildUrl('discover/movie', { with_genres: 99, sort_by: 'popularity.desc', page: 1 }))
+    .then(res => res.json())
+    .then(data => loadCardMovies(data.results, 'documentary-container'))
+    .catch(err => console.error('Erro ao carregar documentários:', err));
+}
+
+// Gêneros com poster
 async function fetchGenresWithPoster() {
   try {
-    const genreRes = await fetch(`https://api.themoviedb.org/3/genre/movie/list?api_key=${API_KEY}&language=pt-BR`);
+    const genreRes = await fetch(`https://api.themoviedb.org/3/genre/movie/list?api_key=${API_KEY}&language=${userLang}`);
     const genreData = await genreRes.json();
     const genres = genreData.genres;
-
     const container = document.getElementById('genres-container');
     container.innerHTML = '';
-    container.style.display = 'flex'; // linha horizontal
-    container.style.gap = '16px';
 
     for (const genre of genres) {
-      // Pega o filme mais popular do gênero para a imagem
-      const movieRes = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&with_genres=${genre.id}&sort_by=popularity.desc&language=pt-BR&page=1`);
+      const movieRes = await fetch(buildUrl('discover/movie', { with_genres: genre.id, sort_by: 'popularity.desc', page: 1 }));
       const movieData = await movieRes.json();
       const movie = movieData.results?.[0];
-
       if (!movie || !movie.poster_path) continue;
 
       const card = document.createElement('button');
@@ -167,9 +176,7 @@ async function fetchGenresWithPoster() {
       `;
 
       card.onclick = () => {
-        // Navega para a página interna do gênero, passando id e nome
-        const url = `genero.html?id=${genre.id}&name=${encodeURIComponent(genre.name)}`;
-        window.location.href = url;
+        window.location.href = `genero.html?id=${genre.id}&name=${encodeURIComponent(genre.name)}`;
       };
 
       container.appendChild(card);
@@ -179,23 +186,18 @@ async function fetchGenresWithPoster() {
   }
 }
 
+// Inicialização
 document.addEventListener('DOMContentLoaded', function () {
-  fetch(buildUrl('movie/popular'))
-    .then(r => r.json())
-    .then(data => loadCardMovies(data.results, 'popular-container'))
-    .catch(err => console.error('Erro ao carregar filmes populares:', err));
-
-  fetch(buildUrl('movie/now_playing'))
-    .then(r => r.json())
-    .then(data => loadCardMovies(data.results, 'movies-container'))
-    .catch(err => console.error('Erro ao carregar filmes em cartaz:', err));
-
-  fetchAllSeries()
-    .then(series => loadCardMovies(series, 'series-container'))
-    .catch(err => console.error('Erro ao carregar séries:', err));
-
+  // Carregar conteúdo
+  fetch(buildUrl('movie/popular')).then(r => r.json()).then(data => loadCardMovies(data.results, 'popular-container'));
+  fetch(buildUrl('movie/now_playing')).then(r => r.json()).then(data => loadCardMovies(data.results, 'movies-container'));
+  fetchAllSeries().then(series => loadCardMovies(series, 'series-container'));
+  loadAnime();
+  loadDocumentaries();
   loadTrendingCarousel();
+  fetchGenresWithPoster();
 
+  // Busca
   const form = document.getElementById('search-form');
   const input = document.getElementById('search-input');
   if (form && input) {
@@ -205,30 +207,18 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // Botão perfil na navbar
+  // Perfil
   const perfilBtn = document.getElementById('btn-perfil');
   const perfilAvatar = document.getElementById('perfil-avatar');
-
   if (perfilBtn && perfilAvatar) {
     const perfilData = localStorage.getItem('perfil-selecionado');
     if (perfilData) {
       try {
         const perfil = JSON.parse(perfilData);
-        if (perfil.avatar) {
-          perfilAvatar.src = perfil.avatar;
-          perfilAvatar.alt = perfil.nome || 'Perfil';
-        } else {
-          perfilAvatar.src = `https://i.pravatar.cc/150?u=${encodeURIComponent(perfil.nome)}`;
-          perfilAvatar.alt = perfil.nome || 'Perfil';
-        }
+        perfilAvatar.src = perfil.avatar || `https://i.pravatar.cc/150?u=${encodeURIComponent(perfil.nome)}`;
+        perfilAvatar.alt = perfil.nome || 'Perfil';
       } catch {}
     }
-
-    perfilBtn.addEventListener('click', () => {
-      window.location.href = 'perfis.html';
-    });
+    perfilBtn.addEventListener('click', () => window.location.href = 'perfis.html');
   }
-
-  // Chama a função que carrega os gêneros com capa e clique
-  fetchGenresWithPoster();
 });

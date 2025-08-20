@@ -26,7 +26,7 @@
         <input id="search-input" class="form-control" type="search" placeholder="Buscar filmes..." aria-label="Buscar" />
       </form>
 
-      <button class="navbar-toggler border-warning" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Alternar navegação">
+      <button class="navbar-toggler border-warning" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
 
@@ -37,7 +37,6 @@
           <li class="nav-item titulo-navbar"><a class="nav-link active px-3" href="filme.html">Filmes</a></li>
           <li class="nav-item titulo-navbar"><a class="nav-link active px-3" href="pesquisa.html" title="Pesquisar"><i class="bi bi-search"></i></a></li>
           <li class="nav-item titulo-navbar"><a class="nav-link active px-3" href="cartaz.html">Em Cartaz</a></li>
-
           <li class="nav-item ms-3 flex-shrink-0">
             <button id="btn-perfil" class="btn btn-outline-warning d-flex align-items-center gap-2" style="border-radius: 50px; padding: 4px 12px;" title="Menu de Perfis">
               <img id="perfil-avatar" src="default-avatar.png" alt="Perfil" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover;" />
@@ -49,6 +48,7 @@
     </div>
   </nav>
 
+  <!-- Carrossel Tendências -->
   <section class="carousel-extended Slides container mt-5 pt-4">
     <div id="trendCarousel" class="carousel slide" data-bs-interval="6000">
       <div class="carousel-inner" id="carousel-trends"></div>
@@ -63,6 +63,7 @@
     </div>
   </section>
 
+  <!-- Seções de conteúdo -->
   <section class="container">
     <h2 class="text">Populares!</h2>
     <div id="popular-container" class="movie-row"></div>
@@ -78,12 +79,23 @@
     <div id="series-container" class="movie-row"></div>
   </section>
 
+  <!-- gêneros vem aqui -->
   <section class="container">
-    <h2 class="text">Gêneros</h2>
+    <h2 class="text">Gêneros!</h2>
     <div id="genres-container" class="genres-row"></div>
   </section>
 
-  <script src="script.js"></script>
+  <section class="container">
+    <h2 class="text">Animes!</h2>
+    <div id="anime-container" class="movie-row"></div>
+  </section>
+
+  <section class="container">
+    <h2 class="text">Documentários!</h2>
+    <div id="documentary-container" class="movie-row"></div>
+  </section>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
