@@ -1,42 +1,42 @@
 <?php
-header('Content-Type: text/plain; charset=utf-8');
-session_start();
-
-$host = "localhost";
+$servername = "localhost";
+$usernameDB = "root";
+$passwordDB = "";
 $dbname = "streaming";
-$user = "root";
-$pass = "";
 
-try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $pass);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    $usernameOrEmail = trim($_POST['username'] ?? '');
-    $password = trim($_POST['password'] ?? '');
-
-    if (!$usernameOrEmail || !$password) {
-        echo "Preencha todos os campos.";
-        exit;
-    }
-
-    $stmt = $pdo->prepare("SELECT * FROM usuarios WHERE username = ? OR email = ?");
-    $stmt->execute([$usernameOrEmail, $usernameOrEmail]);
-    $userData = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if (!$userData) {
-        echo "Usuário ou email não encontrado.";
-        exit;
-    }
-
-    if (!password_verify($password, $userData['password'])) {
-        echo "Senha incorreta.";
-        exit;
-    }
-
-    $_SESSION['user_id'] = $userData['id'];
-    $_SESSION['username'] = $userData['username'];
-    echo "Login bem-sucedido!";
-} catch (PDOException $e) {
-    echo "Erro ao conectar: " . $e->getMessage();
+$conn = new mysqli($servername, $usernameDB, $passwordDB, $dbname);
+if ($conn->connect_error) {
+    die(json_encode(['success' => false, 'message' => "Erro de conexão: " . $conn->connect_error]));
 }
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $username = trim($_POST['username']);
+    $password = trim($_POST['password']);
+
+    $stmt = $conn->prepare("SELECT id, username, password FROM usuarios WHERE username=? OR email=? LIMIT 1");
+    $stmt->bind_param("ss", $username, $username);
+    $stmt->execute();
+    $stmt->store_result();
+
+    if ($stmt->num_rows === 1) {
+        $stmt->bind_result($id, $usernameDB, $hashedPassword);
+        $stmt->fetch();
+
+        if (password_verify($password, $hashedPassword)) {
+            echo json_encode([
+                'success' => true,
+                'message' => 'Login bem-sucedido!',
+                'user' => ['id' => $id, 'username' => $usernameDB]
+            ]);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Senha incorreta.']);
+        }
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Usuário não encontrado.']);
+    }
+
+    $stmt->close();
+}
+
+$conn->close();
 ?>

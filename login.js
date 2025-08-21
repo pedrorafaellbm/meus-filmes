@@ -3,9 +3,10 @@ document.getElementById('login-form').addEventListener('submit', function(e) {
 
   const username = document.getElementById('login-username').value.trim();
   const password = document.getElementById('login-password').value.trim();
+  const mensagemEl = document.getElementById('mensagem-login');
 
   if (!username || !password) {
-    document.getElementById('mensagem-login').innerText = 'Preencha todos os campos.';
+    mensagemEl.innerText = 'Preencha todos os campos.';
     return;
   }
 
@@ -14,18 +15,26 @@ document.getElementById('login-form').addEventListener('submit', function(e) {
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`
   })
-  .then(res => res.text())
+  .then(res => res.json())
   .then(data => {
-    document.getElementById('mensagem-login').innerText = data;
+    mensagemEl.innerText = data.message;
 
-    if (data.toLowerCase().includes('bem-sucedido') || data.toLowerCase().includes('sucesso')) {
+    if (data.success) {
+      // Salvar usuário no localStorage
+      localStorage.setItem('usuario', JSON.stringify({
+        id: data.user.id,
+        username: data.user.username,
+        perfis: data.user.perfis || []
+      }));
+
+      // Redirecionar para perfis.html
       setTimeout(() => { 
-        window.location.href = 'dashboard.html'; 
+        window.location.href = 'perfis.html'; 
       }, 1000);
     }
   })
   .catch(err => {
     console.error(err);
-    document.getElementById('mensagem-login').innerText = 'Erro ao conectar com o servidor.';
+    mensagemEl.innerText = 'Erro ao conectar com o servidor.';
   });
 });
