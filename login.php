@@ -1,4 +1,6 @@
 <?php
+header('Content-Type: application/json');
+
 $servername = "localhost";
 $usernameDB = "root";
 $passwordDB = "";
@@ -6,7 +8,8 @@ $dbname = "streaming";
 
 $conn = new mysqli($servername, $usernameDB, $passwordDB, $dbname);
 if ($conn->connect_error) {
-    die(json_encode(['success' => false, 'message' => "Erro de conexão: " . $conn->connect_error]));
+    echo json_encode(['success' => false, 'message' => "Erro de conexão: " . $conn->connect_error]);
+    exit;
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -25,8 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (password_verify($password, $hashedPassword)) {
             echo json_encode([
                 'success' => true,
-                'message' => 'Login bem-sucedido!',
-                'user' => ['id' => $id, 'username' => $usernameDB]
+                'message' => 'Login bem-sucedido!'
             ]);
         } else {
             echo json_encode(['success' => false, 'message' => 'Senha incorreta.']);
@@ -36,7 +38,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     $stmt->close();
+} else {
+    echo json_encode(['success' => false, 'message' => 'Requisição inválida']);
 }
 
 $conn->close();
-?>

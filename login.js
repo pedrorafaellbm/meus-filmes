@@ -18,19 +18,8 @@ document.getElementById('login-form').addEventListener('submit', function(e) {
   .then(res => res.json())
   .then(data => {
     mensagemEl.innerText = data.message;
-
     if (data.success) {
-      // Salvar usuário no localStorage
-      localStorage.setItem('usuario', JSON.stringify({
-        id: data.user.id,
-        username: data.user.username,
-        perfis: data.user.perfis || []
-      }));
-
-      // Redirecionar para perfis.html
-      setTimeout(() => { 
-        window.location.href = 'perfis.html'; 
-      }, 1000);
+      setTimeout(() => { window.location.href = 'dashboard.html'; }, 1000);
     }
   })
   .catch(err => {

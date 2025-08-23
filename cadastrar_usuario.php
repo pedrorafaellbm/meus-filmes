@@ -1,39 +1,33 @@
 <?php
-header('Content-Type: application/json'); // força retorno JSON
-
 $servername = "localhost";
 $usernameDB = "root";
 $passwordDB = "";
 $dbname = "streaming";
 
+// Configura o cabeçalho para retornar JSON
+header('Content-Type: application/json');
+
 $conn = new mysqli($servername, $usernameDB, $passwordDB, $dbname);
+
 if ($conn->connect_error) {
-    die("Erro de conexão: " . $conn->connect_error);
-    echo json_encode(['success' => false, 'message' => "Erro de conexão: " . $conn->connect_error]);
+    echo json_encode(['success' => false, 'message' => 'Erro de conexão: ' . $conn->connect_error]);
     exit;
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-@@ -18,13 +21,23 @@
+    $username = trim($_POST['username']);
+    $email = trim($_POST['email']);
+    $password = password_hash(trim($_POST['password']), PASSWORD_DEFAULT);
+
+    $stmt = $conn->prepare("INSERT INTO usuarios (username, email, password) VALUES (?, ?, ?)");
     $stmt->bind_param("sss", $username, $email, $password);
 
     if ($stmt->execute()) {
-        echo "Usuário cadastrado com sucesso!";
-        $user_id = $stmt->insert_id;
-        echo json_encode([
-            'success' => true,
-            'message' => 'Usuário cadastrado com sucesso!',
-            'user' => [
-                'id' => $user_id,
-                'username' => $username
-            ]
-        ]);
+        // Retorna sucesso
+        echo json_encode(['success' => true, 'message' => 'Usuário cadastrado com sucesso!']);
     } else {
-        echo "Erro ao cadastrar usuário: " . $stmt->error;
-        echo json_encode([
-            'success' => false,
-            'message' => "Erro ao cadastrar usuário: " . $stmt->error
-        ]);
+        // Retorna falha
+        echo json_encode(['success' => false, 'message' => 'Erro ao cadastrar usuário: ' . $stmt->error]);
     }
 
     $stmt->close();

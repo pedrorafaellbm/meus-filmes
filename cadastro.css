@@ -1,4 +1,4 @@
-/* Reset e configuração básica */
+/* Reset */
 * {
   margin: 0;
   padding: 0;
@@ -13,9 +13,9 @@ body {
   align-items: center;
   padding: 2rem;
   background-image: url('imagens/fundo.png');
-  background-size: cover;          /* Preenche a tela toda */
-  background-position: center;     /* Centraliza a imagem */
-  background-repeat: no-repeat;    /* Não repete */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   color: #fff;
   position: relative;
 }
