@@ -10,6 +10,7 @@ header('Content-Type: application/json');
 $conn = new mysqli($servername, $usernameDB, $passwordDB, $dbname);
 
 if ($conn->connect_error) {
+    // Retorna um erro se não conectar ao banco
     echo json_encode(['success' => false, 'message' => 'Erro de conexão: ' . $conn->connect_error]);
     exit;
 }
@@ -23,10 +24,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->bind_param("sss", $username, $email, $password);
 
     if ($stmt->execute()) {
-        // Retorna sucesso
+        // Retorna sucesso para o JavaScript
         echo json_encode(['success' => true, 'message' => 'Usuário cadastrado com sucesso!']);
     } else {
-        // Retorna falha
+        // Retorna falha para o JavaScript
         echo json_encode(['success' => false, 'message' => 'Erro ao cadastrar usuário: ' . $stmt->error]);
     }
 

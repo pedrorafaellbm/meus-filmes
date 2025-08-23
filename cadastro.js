@@ -12,7 +12,6 @@ document.getElementById('register-form').addEventListener('submit', function (e)
     return;
   }
 
-  // Envia dados para o PHP
   fetch('cadastrar_usuario.php', {
     method: 'POST',
     headers: {
@@ -20,17 +19,14 @@ document.getElementById('register-form').addEventListener('submit', function (e)
     },
     body: `username=${encodeURIComponent(username)}&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
   })
-  // Converte a resposta para JSON
   .then(response => response.json())
   .then(data => {
-    // Exibe a mensagem do servidor
-    document.getElementById('mensagem').innerText = data.message;
-
-    // Se o cadastro foi um sucesso, redireciona o usuário
+    // Redireciona apenas se for sucesso, sem exibir mensagem
     if (data.success) {
-      setTimeout(() => {
-        window.location.href = 'login.html';
-      }, 1000); // Redireciona após 1 segundo (tempo para o usuário ler a mensagem)
+      window.location.href = 'login.html';
+    } else {
+      // Se houver um erro, a mensagem ainda será exibida
+      document.getElementById('mensagem').innerText = data.message;
     }
   })
   .catch(error => {
@@ -39,7 +35,7 @@ document.getElementById('register-form').addEventListener('submit', function (e)
   });
 });
 
-// O restante do seu código de idioma pode continuar o mesmo.
+// O restante do seu código de idioma...
 let currentLang = 'pt';
 document.getElementById('lang-toggle').addEventListener('click', function () {
   // ... seu código de tradução
