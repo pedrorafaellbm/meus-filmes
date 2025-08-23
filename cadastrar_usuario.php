@@ -4,15 +4,18 @@ $usernameDB = "root";
 $passwordDB = "";
 $dbname = "streaming";
 
-// Cria a conexão com o banco de dados
+// Configura o cabeçalho para retornar JSON
+header('Content-Type: application/json');
+
 $conn = new mysqli($servername, $usernameDB, $passwordDB, $dbname);
 
-// Verifica a conexão
+
 if ($conn->connect_error) {
-    die("Erro de conexão: " . $conn->connect_error);
+    echo json_encode(['success' => false, 'message' => 'Erro de conexão: ' . $conn->connect_error]);
+    exit;
 }
 
-// Verifica se os dados do formulário foram enviados
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = trim($_POST['username']);
     $email = trim($_POST['email']);
@@ -23,11 +26,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->bind_param("sss", $username, $email, $password);
 
     if ($stmt->execute()) {
-        // Redireciona o usuário para a página de login
-        header("Location: login.html");
-        exit; // Garante que o script pare de ser executado
+        // Retorna sucesso para o JavaScrip        echo json_encode(['success' => true, 'message' => 'Usuário cadastrado com sucesso!']);
     } else {
-        echo "Erro ao cadastrar usuário: " . $stmt->error;
+        // Retorna falha para o JavaScript
+        echo json_encode(['success' => false, 'message' => 'Erro ao cadastrar usuário: ' . $stmt->error]);
     }
 
     $stmt->close();

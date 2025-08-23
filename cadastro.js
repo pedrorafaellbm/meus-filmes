@@ -1,23 +1,44 @@
 document.getElementById('register-form').addEventListener('submit', function (e) {
-  // A validação de campos vazios pode ser feita aqui
+  e.preventDefault();
+
   const username = document.getElementById('username').value.trim();
   const email = document.getElementById('email').value.trim();
   const password = document.getElementById('password').value.trim();
 
   if (!username || !email || !password) {
-    e.preventDefault(); // Impede o envio se os campos estiverem vazios
     document.getElementById('mensagem').innerText = currentLang === 'pt' 
       ? 'Preencha todos os campos.' 
       : 'Please fill in all fields.';
+    return;
   }
+
+  fetch('cadastrar_usuario.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: `username=${encodeURIComponent(username)}&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
+  })
+  .then(response => response.json())
+  .then(data => {
+    document.getElementById('mensagem').innerText = data.message;
+    
+    // Se o cadastro foi um sucesso, redireciona o usuário
+    if (data.success) {
+      setTimeout(() => {
+        window.location.href = 'login.html';
+      }, 1000); // Redireciona após 1 segundo (tempo para o usuário ler a mensagem)
+    }
+  })
+  .catch(error => {
+    console.error('Erro:', error);
+    document.getElementById('mensagem').innerText = currentLang === 'pt' ? 'Erro de conexão.' : 'Connection error.';
+  });
 });
 
-// O restante do seu código de idioma, organizado e funcional.
 let currentLang = 'pt';
-
 document.getElementById('lang-toggle').addEventListener('click', function () {
   currentLang = currentLang === 'pt' ? 'en' : 'pt';
-
   if (currentLang === 'en') {
     document.getElementById('main-title').innerText = 'Unlimited movies, TV shows and more';
     document.getElementById('form-title').innerText = 'Create Account';
@@ -37,6 +58,5 @@ document.getElementById('lang-toggle').addEventListener('click', function () {
     document.getElementById('login-link-text').innerHTML = 'Já tem uma conta? <a href="#">Entrar</a>';
     this.innerText = 'EN';
   }
-
   document.getElementById('mensagem').innerText = '';
 });
