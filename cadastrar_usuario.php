@@ -4,31 +4,30 @@ $usernameDB = "root";
 $passwordDB = "";
 $dbname = "streaming";
 
-// Configura o cabeçalho para retornar JSON
-header('Content-Type: application/json');
-
+// Cria a conexão com o banco de dados
 $conn = new mysqli($servername, $usernameDB, $passwordDB, $dbname);
 
+// Verifica a conexão
 if ($conn->connect_error) {
-    // Retorna um erro se não conectar ao banco
-    echo json_encode(['success' => false, 'message' => 'Erro de conexão: ' . $conn->connect_error]);
-    exit;
+    die("Erro de conexão: " . $conn->connect_error);
 }
 
+// Verifica se os dados do formulário foram enviados
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = trim($_POST['username']);
     $email = trim($_POST['email']);
     $password = password_hash(trim($_POST['password']), PASSWORD_DEFAULT);
 
+    // Prepara e executa a inserção no banco
     $stmt = $conn->prepare("INSERT INTO usuarios (username, email, password) VALUES (?, ?, ?)");
     $stmt->bind_param("sss", $username, $email, $password);
 
     if ($stmt->execute()) {
-        // Retorna sucesso para o JavaScript
-        echo json_encode(['success' => true, 'message' => 'Usuário cadastrado com sucesso!']);
+        // Redireciona o usuário para a página de login
+        header("Location: login.html");
+        exit; // Garante que o script pare de ser executado
     } else {
-        // Retorna falha para o JavaScript
-        echo json_encode(['success' => false, 'message' => 'Erro ao cadastrar usuário: ' . $stmt->error]);
+        echo "Erro ao cadastrar usuário: " . $stmt->error;
     }
 
     $stmt->close();

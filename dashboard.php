@@ -1,104 +1,52 @@
 <?php
-session_start();
-require 'conexao.php'; // arquivo com a conexão ao MySQL
+$servername = "localhost";
+$usernameDB = "root";
+$passwordDB = "";
+$dbname = "streaming";
 
-// Verifica se o usuário está logado
-if (!isset($_SESSION['usuario_id'])) {
-    header("Location: login.html");
-    exit();
+// Cria a conexão com o banco de dados
+$conn = new mysqli($servername, $usernameDB, $passwordDB, $dbname);
+
+// Verifica a conexão
+if ($conn->connect_error) {
+    die("Erro de conexão: " . $conn->connect_error);
 }
 
-$usuario_id = $_SESSION['usuario_id'];
+// Verifica se os dados do formulário foram enviados
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $username = trim($_POST['username']);
+    $email = trim($_POST['email']);
+    $password = password_hash(trim($_POST['password']), PASSWORD_DEFAULT);
 
-// Busca os perfis do usuário logado
-$sql = "SELECT id, nome FROM perfis WHERE usuario_id = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $usuario_id);
-$stmt->execute();
-$result = $stmt->get_result();
+    // Prepara e executa a inserção no banco
+    $stmt = $conn->prepare("INSERT INTO usuarios (username, email, password) VALUES (?, ?, ?)");
+    $stmt->bind_param("sss", $username, $email, $password);
 
-$perfis = [];
-while ($row = $result->fetch_assoc()) {
-    $perfis[] = $row;
-}
-
-$stmt->close();
-$conn->close();
-?>
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <title>Escolha um Perfil</title>
-    <link rel="stylesheet" href="dashboard.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-<div class="perfil-container">
-    <h2>Escolha um perfil</h2>
-    <div id="perfil-lista" class="d-flex gap-3 flex-wrap">
-        <?php foreach ($perfis as $perfil): ?>
-            <div class="perfil" onclick="selecionarPerfil(<?= $perfil['id'] ?>)">
-                <img src="https://i.pravatar.cc/150?u=<?= urlencode($perfil['nome']) ?>" alt="<?= htmlspecialchars($perfil['nome']) ?>">
-                <div class="perfil-nome"><?= htmlspecialchars($perfil['nome']) ?></div>
-            </div>
-        <?php endforeach; ?>
-    </div>
-    <button class="btn btn-warning mt-3" onclick="abrirModal()">+ Adicionar Perfil</button>
-</div>
-
-<!-- Modal -->
-<div class="modal fade" id="modalPerfil" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content bg-dark text-white">
-      <div class="modal-header">
-        <h5 class="modal-title">Novo Perfil</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body">
-        <input type="text" id="novoPerfilNome" class="form-control" placeholder="Nome do perfil">
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-warning" onclick="salvarPerfil()">Salvar</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-function selecionarPerfil(idPerfil) {
-    window.location.href = "index.php?perfil_id=" + idPerfil;
-}
-
-function abrirModal() {
-    let modal = new bootstrap.Modal(document.getElementById('modalPerfil'));
-    document.getElementById('novoPerfilNome').value = "";
-    modal.show();
-}
-
-function salvarPerfil() {
-    const nome = document.getElementById('novoPerfilNome').value.trim();
-    if (nome.length < 3) {
-        alert("Digite um nome com pelo menos 3 caracteres.");
-        return;
+    if ($stmt->execute()) {
+        // Redireciona o usuário para a página de login
+        header("Location: login.html");
+        exit; // Garante que o script pare de ser executado
+    } else {
+        echo "Erro ao cadastrar usuário: " . $stmt->error;
     }
 
-    fetch('salvar_perfil.php', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-        body: 'nome=' + encodeURIComponent(nome)
-    })
-    .then(res => res.text())
-    .then(res => {
-        if (res === 'ok') {
-            location.reload();
-        } else {
-            alert(res);
-        }
-    });
+    $stmt->close();
 }
-</script>
-</body>
-</html>
+
+$conn->close();
+?>
+Passo 2: O HTML
+O seu HTML precisa ser um formulário que envie os dados para o PHP de forma tradicional, ou seja, com a página recarregando.
+
+Ajuste o seu código HTML.
+
+HTML
+
+<form id="register-form" class="cadastro-form" action="cadastrar_usuario.php" method="post">
+  <h2 id="form-title">Criar conta</h2>
+  <input type="text" id="username" name="username" placeholder="Nome de usuário (mín. 20 letras)" required>
+  <input type="email" id="email" name="email" placeholder="Email" required>
+  <input type="password" id="password" name="password" placeholder="Senha (mín. 26 caracteres)" required>
+  <button type="submit" id="register-button">Registrar</button>
+  <p id="mensagem" class="mensagem"></p>
+</form>
