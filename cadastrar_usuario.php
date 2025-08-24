@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // AQUI: A linha foi alterada para usar a tabela 'usuario'
+    // AQUI ESTÁ A ALTERAÇÃO: Trocando a tabela de 'usuarios' para 'usuario'
     $stmt = $conn->prepare("INSERT INTO usuario (username, email, password) VALUES (?, ?, ?)");
     $stmt->bind_param("sss", $username, $email, $password);
 

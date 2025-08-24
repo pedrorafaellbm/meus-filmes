@@ -37,7 +37,7 @@ document.getElementById('login-form').addEventListener('submit', function(e) {
       // Se o login foi um sucesso, redireciona o usuário para a área de perfis
       if (data.success) {
         setTimeout(() => {
-          // AQUI ESTÁ A ALTERAÇÃO: Redireciona para o arquivo de perfis
+          // Redireciona para o arquivo de perfis
           window.location.href = 'perfis.html'; 
         }, 2000); 
       }

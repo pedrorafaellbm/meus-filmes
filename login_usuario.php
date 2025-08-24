@@ -16,7 +16,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = trim($_POST['username']);
     $password = trim($_POST['password']);
 
-    $stmt = $conn->prepare("SELECT id, username, password FROM usuarios WHERE username=? OR email=? LIMIT 1");
+    // AQUI ESTÁ A ALTERAÇÃO: Trocando a tabela de 'usuarios' para 'usuario'
+    $stmt = $conn->prepare("SELECT id, username, password FROM usuario WHERE username=? OR email=? LIMIT 1");
     $stmt->bind_param("ss", $username, $username);
     $stmt->execute();
     $stmt->store_result();
@@ -43,4 +44,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $conn->close();
-?>
