@@ -21,17 +21,19 @@
         </div>
     </nav>
     <div class="bg-overlay"></div>
-    <div class="cadastro-container">
-        <h1 class="logo" id="main-title">Bem-vindo de volta</h1>
-        <form id="login-form" class="cadastro-form">
+
+    <div class="login-container">
+        <h1 class="logo" id="main-title">Filmes, programas de TV e muito mais ilimitados</h1>
+        <form id="login-form" class="login-form">
             <h2 id="form-title">Entrar</h2>
-            <input type="text" id="username" name="username" placeholder="Nome de usuário ou Email" required>
+            <input type="email" id="email" name="email" placeholder="Email" required>
             <input type="password" id="password" name="password" placeholder="Senha" required>
-            <button type="submit">Entrar</button>
+            <button type="submit" id="login-button">Entrar</button>
             <p id="mensagem" class="mensagem"></p>
         </form>
-        <p class="login-link" id="login-link-text">Não tem uma conta? <a class="entrar" href="cadastro.html">Criar conta</a></p>
+        <p class="cadastro-link" id="cadastro-link-text">Não tem uma conta? <a href="cadastro.html">Criar conta</a></p>
     </div>
+
     <script src="login.js"></script>
 </body>
 </html>
