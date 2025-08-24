@@ -7,7 +7,6 @@ document.getElementById('register-form').addEventListener('submit', function(e) 
   const password = document.getElementById('password').value.trim();
   const mensagem = document.getElementById('mensagem');
 
-  // Verifica se os campos estão preenchidos
   if (!username || !email || !password) {
     mensagem.innerText = currentLang === 'pt' ? 'Preencha todos os campos.' : 'Please fill in all fields.';
     return;
@@ -19,7 +18,7 @@ document.getElementById('register-form').addEventListener('submit', function(e) 
   formData.append('email', email);
   formData.append('password', password);
 
-  // Envia os dados para o PHP usando fetch
+  // Envia os dados para o PHP
   fetch('cadastrar_usuario.php', {
       method: 'POST',
       body: formData
