@@ -1,39 +1,40 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Criar Conta - Cine-Vision</title>
-    <link rel="stylesheet" href="cadastro.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link rel="icon" type="image/png" href="imagens/movie.png" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Criar Conta - Cine-Vision</title>
+    <link rel="stylesheet" href="cadastro.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="imagens/movie.png" />
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg fixed-top">
-        <div class="container d-flex justify-content-between align-items-center">
-            <a class="navbar-brand d-flex align-items-center" href="#">
-                <img src="imagens/movie.png" alt="Cine-Vision" width="40" class="me-2" />
-                <span class="fs-4 text-warning fw-bold titulo-navbar">Cine-Vision</span>
-            </a>
-            <div class="language-switcher">
-                <button id="lang-toggle" class="btn btn-outline-light btn-sm">EN</button>
-            </div>
-        </div>
-    </nav>
-    <div class="bg-overlay"></div>
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container d-flex justify-content-between align-items-center">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <img src="imagens/movie.png" alt="Cine-Vision" width="40" class="me-2" />
+                <span class="fs-4 text-warning fw-bold titulo-navbar">Cine-Vision</span>
+            </a>
+            <div class="language-switcher">
+                <button id="lang-toggle" class="btn btn-outline-light btn-sm">EN</button>
+            </div>
+        </div>
+    </nav>
+    <div class="bg-overlay"></div>
 
-    <div class="cadastro-container">
-        <h1 class="logo" id="main-title">Filmes, programas de TV e muito mais ilimitados</h1>
-        <form id="register-form" class="cadastro-form" **action="cadastrar_usuario.php" method="post"**>
-            <h2 id="form-title">Criar conta</h2>
-            <input type="text" id="username" name="username" placeholder="Nome de usuário (mín. 20 letras)" required>
-            <input type="email" id="email" name="email" placeholder="Email" required>
-            <input type="password" id="password" name="password" placeholder="Senha (mín. 26 caracteres)" required>
-            <button type="submit" id="register-button">Registrar</button>
-            <p id="mensagem" class="mensagem"></p>
-        </form>
-        <p class="login-link" id="login-link-text">Já tem uma conta? <a href="login.html">Entrar</a></p>
-    </div>
-    <script src="cadastro.js"></script>
+    <div class="cadastro-container">
+        <h1 class="logo" id="main-title">Filmes, programas de TV e muito mais ilimitados</h1>
+        <form id="register-form" class="cadastro-form">
+            <h2 id="form-title">Criar conta</h2>
+            <input type="text" id="username" name="username" placeholder="Nome de usuário (mín. 20 letras)" required>
+            <input type="email" id="email" name="email" placeholder="Email" required>
+            <input type="password" id="password" name="password" placeholder="Senha (mín. 26 caracteres)" required>
+            <button type="submit" id="register-button">Registrar</button>
+            <p id="mensagem" class="mensagem"></p>
+        </form>
+        <p class="login-link" id="login-link-text">Já tem uma conta? <a class="entrar btn-succes" href="login.html">Entrar</a></p>
+    </div>
+
+    <script src="cadastro.js"></script>
 </body>
 </html>
