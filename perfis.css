@@ -1,62 +1,123 @@
 body {
-  background: url('imagens/fundo.png') no-repeat center center fixed;
-  background-size: cover;
-  color: white;
-  font-family: Arial, sans-serif;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 2rem;
-  background-color: black;
+    background-color: #000;
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
 
-.perfil-container {
-  background-color: rgba(1, 31, 6, 0.867);
-  padding: 2rem;
-  border-radius: 10px;
-  max-width: 600px;
-  width: 100%;
+/* Fundo com a imagem de pôsteres e efeito de paralaxe */
+.background-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* URL de uma imagem de pôsteres de filmes */
+    background-image: url('imagens/fundo.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    z-index: -2;
 }
 
-.perfil {
-  background-color: rgba(255, 215, 0, 0.15);
-  border-radius: 10px;
-  width: 120px;
-  height: 140px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-  user-select: none;
+/* Sobreposição escura para destacar o conteúdo */
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: -1;
 }
 
-.perfil:hover {
-  transform: scale(1.1);
-  box-shadow: 0 0 10px #ffd700aa;
+/* Container central, com fundo escuro e bordas arredondadas */
+.perfis-container {
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    max-width: 800px;
+    width: 90%;
+    z-index: 1;
 }
 
-.perfil img {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  margin-bottom: 0.5rem;
-  object-fit: cover;
-  background-color: #444;
+.titulo {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 40px;
+}
+
+.perfis-grid {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.perfil-item {
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out, filter 0.2s ease-in-out;
+}
+
+.perfil-item:hover {
+    transform: scale(1.08);
+    filter: brightness(1.2);
+}
+
+/* Estilo para as imagens dos perfis (redondas) */
+.perfil-img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid transparent;
+}
+
+.perfil-item:hover .perfil-img {
+    border-color: #fff;
 }
 
 .perfil-nome {
-  font-weight: bold;
-  font-size: 1.1rem;
-  color: #ffd700;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
+    margin-top: 10px;
+    font-size: 1.2rem;
+    font-weight: 400;
 }
 
-#btn-add-perfil {
-  max-width: 200px;
+/* Estilo para o botão de adicionar perfil */
+.adicionar-perfil {
+    width: 150px;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #333;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.adicionar-perfil:hover {
+    background-color: #444;
+    transform: scale(1.08);
+}
+
+.adicionar-perfil span {
+    font-size: 80px;
+    color: #fff;
+}
+
+.opcoes-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
 }

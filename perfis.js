@@ -1,92 +1,113 @@
-const storageKey = 'usuario';
+// Função para carregar os perfis do usuário logado
+async function carregarPerfis() {
+    const perfisGrid = document.getElementById('perfis-grid');
+    perfisGrid.innerHTML = ''; // Limpa a grade antes de adicionar os perfis
 
-// Função para pegar usuário do localStorage
-function getUsuario() {
-  const usuarioStr = localStorage.getItem(storageKey);
-  if (!usuarioStr) return null;
-  return JSON.parse(usuarioStr);
-}
+    try {
+        const response = await fetch('obter_perfis.php');
+        const data = await response.json();
 
-// Salvar usuário com perfis
-function setUsuario(usuario) {
-  localStorage.setItem(storageKey, JSON.stringify(usuario));
-}
+        if (data.success) {
+            data.perfis.forEach(perfil => {
+                const perfilItem = document.createElement('div');
+                perfilItem.className = 'perfil-item';
+                perfilItem.dataset.id = perfil.id;
+                perfilItem.innerHTML = `
+                    <img src="${perfil.avatar_url}" alt="Avatar de ${perfil.nome}" class="perfil-img">
+                    <div class="perfil-nome">${perfil.nome}</div>
+                `;
+                perfilItem.addEventListener('click', () => selecionarPerfil(perfil.id));
+                perfisGrid.appendChild(perfilItem);
+            });
 
-// Carregar perfis na tela
-function carregarPerfis() {
-  const usuario = getUsuario();
-  if (!usuario) {
-    alert('Usuário não encontrado! Faça login primeiro.');
-    return;
-  }
-  if (!usuario.perfis) usuario.perfis = [];
+            // Adiciona a opção para criar um novo perfil
+            const adicionarPerfil = document.createElement('div');
+            adicionarPerfil.className = 'perfil-item adicionar-perfil';
+            adicionarPerfil.innerHTML = `<span>+</span>`;
+            adicionarPerfil.dataset.bsToggle = "modal";
+            adicionarPerfil.dataset.bsTarget = "#modalCriarPerfil";
+            perfisGrid.appendChild(adicionarPerfil);
 
-  const container = document.getElementById('perfil-lista');
-  container.innerHTML = '';
-
-  usuario.perfis.forEach((perfil, i) => {
-    const div = document.createElement('div');
-    div.className = 'perfil';
-    div.title = perfil.nome;
-    div.dataset.index = i;
-
-    div.innerHTML = `
-      <img src="https://i.pravatar.cc/150?u=${encodeURIComponent(perfil.nome)}" alt="${perfil.nome}" />
-      <div class="perfil-nome">${perfil.nome}</div>
-    `;
-
-    div.addEventListener('click', () => {
-      localStorage.setItem('perfil-selecionado', JSON.stringify(perfil));
-      window.location.href = 'index.html';
-    });
-
-    container.appendChild(div);
-  });
-}
-
-// Adicionar novo perfil
-function adicionarPerfil(nome) {
-  if (!nome || nome.trim().length === 0) return false;
-  const usuario = getUsuario();
-  if (!usuario) return false;
-
-  if (!usuario.perfis) usuario.perfis = [];
-
-  if (usuario.perfis.find(p => p.nome.toLowerCase() === nome.toLowerCase())) {
-    alert('Perfil já existe com esse nome.');
-    return false;
-  }
-
-  usuario.perfis.push({ nome: nome.trim() });
-  setUsuario(usuario);
-  carregarPerfis();
-  return true;
-}
-
-// Executa após carregar a página
-document.addEventListener('DOMContentLoaded', () => {
-  carregarPerfis();
-
-  const modalElement = document.getElementById('modalPerfil');
-  const modal = new bootstrap.Modal(modalElement);
-  const btnAddPerfil = document.getElementById('btn-add-perfil');
-  const btnSalvarPerfil = document.getElementById('salvarPerfil');
-  const inputNomePerfil = document.getElementById('novoPerfilNome');
-
-  btnAddPerfil.addEventListener('click', () => {
-    inputNomePerfil.value = '';
-    modal.show();
-  });
-
-  btnSalvarPerfil.addEventListener('click', () => {
-    const nome = inputNomePerfil.value.trim();
-    if (nome.length < 3) {
-      alert('Digite um nome com pelo menos 3 caracteres.');
-      return;
+        } else {
+            console.error('Erro ao carregar perfis:', data.message);
+            // Redireciona para o login se não estiver autenticado
+            if (data.message.includes('autenticado')) {
+                window.location.href = 'login.html';
+            }
+        }
+    } catch (error) {
+        console.error('Erro de rede ao carregar perfis:', error);
     }
-    const added = adicionarPerfil(nome);
-    if (added) {
-      modal.hide();
+}
+
+// Função para selecionar um perfil e salvar na sessão
+async function selecionarPerfil(perfilId) {
+    try {
+        const response = await fetch('selecionar_perfil.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ perfil_id: perfilId })
+        });
+        const data = await response.json();
+
+        if (data.success) {
+            // Redireciona para a página principal após a seleção
+            window.location.href = 'inicio.html';
+        } else {
+            alert(data.message);
+        }
+    } catch (error) {
+        console.error('Erro ao selecionar perfil:', error);
     }
-  });
+}
+
+// Lógica do formulário de criação de perfil no modal
+document.getElementById('form-criar-perfil').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const nomePerfil = document.getElementById('nomePerfil').value;
+    const mensagemModal = document.getElementById('mensagem-modal');
+
+    const formData = new FormData();
+    formData.append('nome', nomePerfil);
+
+    try {
+        const response = await fetch('criar_perfil.php', {
+            method: 'POST',
+            body: formData
+        });
+        const data = await response.json();
+        
+        mensagemModal.textContent = data.message;
+        
+        if (data.success) {
+            // Fecha o modal e recarrega a lista de perfis
+            const modal = bootstrap.Modal.getInstance(document.getElementById('modalCriarPerfil'));
+            modal.hide();
+            await carregarPerfis();
+        }
+    } catch (error) {
+        console.error('Erro ao criar perfil:', error);
+        mensagemModal.textContent = 'Erro ao conectar com o servidor.';
+    }
 });
+
+// Event listener para o botão de sair
+document.getElementById('sair-btn').addEventListener('click', async () => {
+    try {
+        const response = await fetch('logout.php');
+        const data = await response.json();
+        if (data.success) {
+            window.location.href = 'login.html';
+        } else {
+            alert(data.message);
+        }
+    } catch (error) {
+        console.error('Erro ao sair:', error);
+    }
+});
+
+
+// Carrega os perfis quando a página é carregada
+document.addEventListener('DOMContentLoaded', carregarPerfis);
