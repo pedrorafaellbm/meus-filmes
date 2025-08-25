@@ -1,18 +1,9 @@
 <?php
-$servername = "localhost";
-$usernameDB = "root";
-$passwordDB = "";
-$dbname = "streaming";
+// Inclui o arquivo de conexão com o banco de dados
+require 'conexao.php';
 
 // Configura o cabeçalho para retornar JSON
 header('Content-Type: application/json');
-
-$conn = new mysqli($servername, $usernameDB, $passwordDB, $dbname);
-
-if ($conn->connect_error) {
-    echo json_encode(['success' => false, 'message' => 'Erro de conexão com o banco de dados.']);
-    exit;
-}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = trim($_POST['username']);
@@ -25,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // AQUI: A linha foi alterada para usar a tabela 'usuario'
+    // A linha foi alterada para usar a tabela 'usuario'
     $stmt = $conn->prepare("INSERT INTO usuario (username, email, password) VALUES (?, ?, ?)");
     $stmt->bind_param("sss", $username, $email, $password);
 
